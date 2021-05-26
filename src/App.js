@@ -8,7 +8,7 @@ class App extends Component {
       <MaterialTable
         title="CoviApp Dashboard"
         columns={[
-          { title: 'Name2', field: 'name' },
+          { title: 'Name', field: 'name' },
           { title: 'Roll No/EC Code', field: 'username' },
           { title: 'Location', field: 'location'},
           {
