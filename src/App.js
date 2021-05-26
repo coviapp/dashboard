@@ -8,7 +8,7 @@ class App extends Component {
       <MaterialTable
         title="Basic Filtering Preview"
         columns={[
-          { title: 'Name', field: 'name' },
+          { title: 'Name2', field: 'name' },
           { title: 'Surname', field: 'surname' },
           { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
           {
