@@ -4,6 +4,7 @@ import MaterialTable from 'material-table'
 
 // Importing Icons
 import { forwardRef } from 'react';
+import { BrowserRouter, Router } from 'react-router-dom';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -45,6 +46,28 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
 };
+
+const myData = [
+  { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
+  { name: 'Aryan', username: '2', location: 'RP', status:0 ,patientCategory: 1, spo2: 75, temperature: 49 },
+  { name: 'Aryan', username: '3', location: 'RP', status:0 ,patientCategory: 1, spo2: 92, temperature: 8 },
+  { name: 'Aryan', username: '4', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 485 },
+  { name: 'Aryan', username: '5', location: 'RP', status:0 ,patientCategory: 1, spo2: 96, temperature: 48 },
+  { name: 'Aryan', username: '6', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 88 },
+  { name: 'Aryan', username: '7', location: 'RP', status:0 ,patientCategory: 1, spo2: 92, temperature: 78 },
+  { name: 'Aryan', username: '8', location: 'RP', status:0 ,patientCategory: 1, spo2: 94, temperature: -10 },
+  { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
+  { name: 'Aryan', username: '2', location: 'RP', status:1 ,patientCategory: 1, spo2: 100, temperature: 49 },
+  { name: 'Aryan', username: '3', location: 'RP', status:1 ,patientCategory: 1, spo2: 99, temperature: 8 },
+  { name: 'Aryan', username: '4', location: 'RP', status:1 ,patientCategory: 1, spo2: 88, temperature: 485 },
+  { name: 'Aryan', username: '5', location: 'RP', status:1 ,patientCategory: 1, spo2: 93, temperature: 48 },
+  { name: 'Aryan', username: '6', location: 'RP', status:1 ,patientCategory: 1, spo2: 91, temperature: 88 },
+  { name: 'Aryan', username: '7', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 78 },
+  { name: 'Aryan', username: '8', location: 'RP', status:1 ,patientCategory: 1, spo2: 91, temperature: -10 },
+  { name: 'Prof. Abhinandan', username: '123', location: 'RK', patientCategory: 2, spo2: 708, temperature: -10 },
+];
+
+// Todo: read from json!
 
 const degree = String.fromCharCode(parseInt("00B0", 16));
 const spo2UpperBound=95;
@@ -104,31 +127,21 @@ class App extends Component {
             },
           ]}
 
-        data={[
-          { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '2', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 49 },
-          { name: 'Aryan', username: '3', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 8 },
-          { name: 'Aryan', username: '4', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 485 },
-          { name: 'Aryan', username: '5', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '6', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 88 },
-          { name: 'Aryan', username: '7', location: 'RP', status:0 ,patientCategory: 1, spo2: 92, temperature: 78 },
-          { name: 'Aryan', username: '8', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: -10 },
-          { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '2', location: 'RP', status:1 ,patientCategory: 1, spo2: 100, temperature: 49 },
-          { name: 'Aryan', username: '3', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 8 },
-          { name: 'Aryan', username: '4', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 485 },
-          { name: 'Aryan', username: '5', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '6', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 88 },
-          { name: 'Aryan', username: '7', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 78 },
-          { name: 'Aryan', username: '8', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: -10 },
-          { name: 'Prof. Abhinandan', username: '123', location: 'RK', patientCategory: 2, spo2: 708, temperature: -10 },
-        ]}
+        data = {myData}
         options={{
           filtering: true,
           exportButton: true,
           exportAllData: true,
           pageSize: 10,
         }}
+
+        actions={[
+          rowData => ({
+            icon: () => <BrowserRouter to={"#"}><h6>Display!</h6></BrowserRouter>,
+            tooltip: 'Open profile',
+            onlick: (rowData)
+          })
+        ]}
       />
     )
   }

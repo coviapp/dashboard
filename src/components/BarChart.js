@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2'
 const BarChart = () => {
   // returning a jsx
   return (
-    <div>
+    <>
       <h2 id="header">
           Displaying information for Mr X
           <br/>
@@ -43,7 +43,7 @@ const BarChart = () => {
         }}
 
       />
-    </div>
+    </>
   )
 }
 
