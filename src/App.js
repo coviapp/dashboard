@@ -22,7 +22,7 @@ class App extends Component {
         ]}
         options={{
           filtering: true
-        }}
+        }} 
       />
     )
   }
