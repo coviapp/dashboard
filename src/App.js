@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import MaterialTable from 'material-table'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <MaterialTable
+        title="Basic Filtering Preview"
+        columns={[
+          { title: 'Name', field: 'name' },
+          { title: 'Surname', field: 'surname' },
+          { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+          {
+            title: 'Birth Place',
+            field: 'birthCity',
+          },
+        ]}
+        data={[
+          { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
+          { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
+        ]}
+        options={{
+          filtering: true
+        }}
+      />
+    )
+  }
 }
 
 export default App;
