@@ -45,8 +45,7 @@ const tableIcons = {
   Filter: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
 };
 
-// degree Fahrenheit from hex unicode
-const degreeFahrenheit = String.fromCharCode(parseInt("2109", 16));
+const degree = String.fromCharCode(parseInt("00B0", 16));
 const spo2UpperBound=95;
 const spo2LowerBound=90;
 
@@ -71,7 +70,7 @@ class App extends Component {
               field: 'location'
             },
             {
-              title: 'Temperature ' + degreeFahrenheit,
+              title: 'Temperature '+degree+'F',
               field: 'temperature',
               type: "numeric",
               customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
@@ -88,12 +87,14 @@ class App extends Component {
 
             },
             {
-              title: 'Condition',
-              field: 'condition',
+              title: 'Discharged from Isolation',
+              field: 'status',
+              lookup: {0:'No',1:'Yes',},
             },
             {
-              title: 'Status(Discharged from isolation)',
-              field: 'status'
+              title: 'Condition',
+              field: 'condition',
+              filtering: false,
             },
             {
               title: 'Category',
@@ -103,22 +104,22 @@ class App extends Component {
           ]}
 
         data={[
-          { name: 'Aryan', username: '1', location: 'RP', patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '2', location: 'RP', patientCategory: 1, spo2: 78, temperature: 49 },
-          { name: 'Aryan', username: '3', location: 'RP', patientCategory: 1, spo2: 78, temperature: 8 },
-          { name: 'Aryan', username: '4', location: 'RP', patientCategory: 1, spo2: 78, temperature: 485 },
-          { name: 'Aryan', username: '5', location: 'RP', patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '6', location: 'RP', patientCategory: 1, spo2: 78, temperature: 88 },
-          { name: 'Aryan', username: '7', location: 'RP', patientCategory: 1, spo2: 92, temperature: 78 },
-          { name: 'Aryan', username: '8', location: 'RP', patientCategory: 1, spo2: 78, temperature: -10 },
-          { name: 'Aryan', username: '1', location: 'RP', patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '2', location: 'RP', patientCategory: 1, spo2: 100, temperature: 49 },
-          { name: 'Aryan', username: '3', location: 'RP', patientCategory: 1, spo2: 78, temperature: 8 },
-          { name: 'Aryan', username: '4', location: 'RP', patientCategory: 1, spo2: 78, temperature: 485 },
-          { name: 'Aryan', username: '5', location: 'RP', patientCategory: 1, spo2: 78, temperature: 48 },
-          { name: 'Aryan', username: '6', location: 'RP', patientCategory: 1, spo2: 78, temperature: 88 },
-          { name: 'Aryan', username: '7', location: 'RP', patientCategory: 1, spo2: 78, temperature: 78 },
-          { name: 'Aryan', username: '8', location: 'RP', patientCategory: 1, spo2: 78, temperature: -10 },
+          { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
+          { name: 'Aryan', username: '2', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 49 },
+          { name: 'Aryan', username: '3', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 8 },
+          { name: 'Aryan', username: '4', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 485 },
+          { name: 'Aryan', username: '5', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
+          { name: 'Aryan', username: '6', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 88 },
+          { name: 'Aryan', username: '7', location: 'RP', status:0 ,patientCategory: 1, spo2: 92, temperature: 78 },
+          { name: 'Aryan', username: '8', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: -10 },
+          { name: 'Aryan', username: '1', location: 'RP', status:0 ,patientCategory: 1, spo2: 78, temperature: 48 },
+          { name: 'Aryan', username: '2', location: 'RP', status:1 ,patientCategory: 1, spo2: 100, temperature: 49 },
+          { name: 'Aryan', username: '3', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 8 },
+          { name: 'Aryan', username: '4', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 485 },
+          { name: 'Aryan', username: '5', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 48 },
+          { name: 'Aryan', username: '6', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 88 },
+          { name: 'Aryan', username: '7', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: 78 },
+          { name: 'Aryan', username: '8', location: 'RP', status:1 ,patientCategory: 1, spo2: 78, temperature: -10 },
           { name: 'Prof. Abhinandan', username: '123', location: 'RK', patientCategory: 2, spo2: 708, temperature: -10 },
         ]}
         options={{
