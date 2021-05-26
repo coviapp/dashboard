@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import MaterialTable from 'material-table'
+import axios from 'axios';
 
 // Importing Icons
 import { forwardRef } from 'react';
@@ -74,10 +75,36 @@ const spo2UpperBound=95;
 const spo2LowerBound=90;
 
 class App extends Component {
+
+  state = {
+    rows: [], // rows will be a list of PATIENT OBJECT
+
+    /*
+      PATIENT OBJECT SCHEMA
+
+      "name": String,
+      "location": String,
+      "temperature": int,
+      "spo2": int, // should be between 0-100 as it is %
+      "status": bool, // wether discharged from isolation or not
+      "condition": String,
+      "patientCategory": int, // only {1,2,3} // { 1: 'Student', 2: 'Faculty', 3: 'Staff' }
+    */
+
+  }
+
+  componentDidMount() {
+    const url = "https://aryan57.github.io/json_dumps/data.json";
+    axios.get(url).then(response => response.data)
+    .then((data) => {
+      this.setState({ rows: data.jsonUserData })
+     })
+
+  }
+
   render() {
     return (
       <MaterialTable
-        icons={tableIcons}
         title="CoviApp Dashboard"
         columns={
           [
@@ -127,12 +154,13 @@ class App extends Component {
             },
           ]}
 
-        data = {myData}
+        data = {this.state.rows}
         options={{
           filtering: true,
           exportButton: true,
           exportAllData: true,
           pageSize: 10,
+          search: true,
         }}
 
         actions={[
