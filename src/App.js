@@ -23,6 +23,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import BarChart from './components/BarChart'
 import LineChart from './components/LineChart'
+// todo: figure out a way to route
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
