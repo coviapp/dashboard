@@ -21,6 +21,9 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import SearchIcon from '@material-ui/icons/Search';
 
+import BarChart from './components/BarChart'
+import LineChart from './components/LineChart'
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
