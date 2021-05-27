@@ -169,7 +169,7 @@ class App extends Component {
             icon: ArrowForwardIcon,
             tooltip: 'Click to monitor',
             onClick: () => {
-              this.props.history.push(`/graphs/${rowData.username}`)
+              this.props.history.push(`../graphs/${rowData.username}`)
             }
           })
         ]}
