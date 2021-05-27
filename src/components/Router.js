@@ -1,8 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import App from './App'
-import BarChart from './BarChart'
-import LineChart from './LineChart'
+import Graph from './Graph'
 import NotFound from './NotFound'
 
 
@@ -10,8 +9,7 @@ const Router = () => (
     <BrowserRouter>
         <Switch>
             <Route exact path="/" component = { App }/>
-            <Route exact path="/BarChart/:username" component = { BarChart }/>
-            <Route exact path="/LineChart/:username" component = { LineChart }/>
+            <Route exact path="/graphs/:username" component = { Graph }/>
             <Route component = { NotFound }/>
         </Switch>
     </BrowserRouter>
