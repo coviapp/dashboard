@@ -23,8 +23,8 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import SearchIcon from '@material-ui/icons/Search';
 
-import BarChart from './components/BarChart'
-import LineChart from './components/LineChart'
+import BarChart from './BarChart'
+import LineChart from './LineChart'
 // todo: figure out a way to route
 
 const tableIcons = {
@@ -181,4 +181,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App
