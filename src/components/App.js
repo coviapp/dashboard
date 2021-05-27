@@ -104,7 +104,7 @@ class App extends Component {
 
   render() {
     return (
-      <MaterialTable
+      <MaterialTable 
         title="CoviApp Dashboard"
         columns={
           [
@@ -166,9 +166,11 @@ class App extends Component {
 
         actions={[
           rowData => ({
-            // Todo: add icon here!
-            icon: () => <Link to={"./graphs/" + rowData.username}>Monitor</Link>,
+            icon: ArrowForwardIcon,
             tooltip: 'Click to monitor',
+            onClick: () => {
+              this.props.history.push(`/graphs/${rowData.username}`)
+            }
           })
         ]}
       />
