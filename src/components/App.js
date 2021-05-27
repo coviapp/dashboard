@@ -5,7 +5,8 @@ import axios from 'axios';
 
 // Importing Icons
 import { forwardRef } from 'react';
-import { BrowserRouter, Router } from 'react-router-dom';
+import Graph from "./Graph";
+import { Link } from 'react-router-dom';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -74,7 +75,8 @@ const spo2LowerBound=90;
 class App extends Component {
 
   state = {
-    rows: [], // rows will be a list of PATIENT OBJECT
+    rows: [], 
+    // rows will be a list of PATIENT OBJECT
 
     /*
       PATIENT OBJECT SCHEMA
@@ -158,11 +160,12 @@ class App extends Component {
           exportAllData: true,
           pageSize: 10,
           search: true,
+          actionsColumnIndex: 1,
         }}
 
         actions={[
           rowData => ({
-            icon: () => <BrowserRouter to={"#"}><h6>Display!</h6></BrowserRouter>,
+            icon: () => <Link to={"./graphs/123"}><h6>Monitor</h6></Link>,
             tooltip: 'Open profile',
             onlick: (rowData)
           })

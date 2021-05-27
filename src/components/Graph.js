@@ -1,6 +1,8 @@
 import React from 'react'
 import { Bar, Line } from 'react-chartjs-2'
 
+// todo: decide if we require a class ?
+
 const Graph = () => (
   <React.Fragment>
     <h2 id="header">
