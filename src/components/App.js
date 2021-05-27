@@ -23,6 +23,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import SearchIcon from '@material-ui/icons/Search';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 
 const tableIcons = {
@@ -165,9 +166,8 @@ class App extends Component {
 
         actions={[
           rowData => ({
-            icon: () => <Link to={"./graphs/123"}><h6>Monitor</h6></Link>,
-            tooltip: 'Open profile',
-            onlick: (rowData)
+            icon: () => <Link to={"./graphs/" + rowData.username}>Monitor</Link>,
+            tooltip: 'Click',
           })
         ]}
       />
