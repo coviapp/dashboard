@@ -166,8 +166,9 @@ class App extends Component {
 
         actions={[
           rowData => ({
+            // Todo: add icon here!
             icon: () => <Link to={"./graphs/" + rowData.username}>Monitor</Link>,
-            tooltip: 'Click',
+            tooltip: 'Click to monitor',
           })
         ]}
       />
