@@ -14,8 +14,8 @@ class Login extends React.Component {
     super()
     let loggedIn = false
 
-    // const token = localStorage.getItem("token")
-    // if (token) loggedIn = true
+    const token = localStorage.getItem("token")
+    if (token) loggedIn = true
 
     this.state = {
       email: "",
@@ -55,7 +55,7 @@ class Login extends React.Component {
     console.log(this.state.loggedIn)
 
     if (this.state.loggedIn === true) {
-      return <Redirect to="/app" />
+      return <Redirect to="/dashboard" />
     }
     return (
       <Container component="main" maxWidth="xs">
