@@ -52,11 +52,11 @@ class Login extends React.Component {
   }
 
   render() {
-    console.log(this.state.loggedIn)
 
     if (this.state.loggedIn === true) {
       return <Redirect to="/dashboard" />
     }
+    
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />

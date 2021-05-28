@@ -1,9 +1,28 @@
 import React from 'react'
 import { Bar, Line } from 'react-chartjs-2'
+import { Redirect } from 'react-router-dom'
 
 class Graph extends React.Component {
 
+  constructor() {
+    super()
+    let loggedIn = false
+
+    const token = localStorage.getItem("token")
+    if (token) loggedIn = true
+    // Todo: Verify the token
+    
+    this.state = {
+        loggedIn,
+    }
+  }
+
   render() {
+    
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/logout" />
+    }
+
     const myUsername = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     console.log("Plotted graph for " + myUsername)
     return (

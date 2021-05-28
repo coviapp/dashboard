@@ -21,6 +21,7 @@ class Dashboard extends Component {
 
     const token = localStorage.getItem("token")
     if (token) loggedIn = true
+    // Todo: verify token
     
     this.logout = this.logout.bind(this)
     
@@ -49,7 +50,7 @@ class Dashboard extends Component {
   render() {
     
     if (this.state.loggedIn === false) {
-      return <Redirect to="../" />
+      return <Redirect to="/logout" />
     }
 
     return (
