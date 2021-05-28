@@ -24,6 +24,10 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import SearchIcon from '@material-ui/icons/Search';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
+import { Autorenew } from "@material-ui/icons";
+import { Redirect } from "react-router-dom"
 
 
 const tableIcons = {
@@ -75,22 +79,26 @@ const spo2LowerBound=90;
 
 class App extends Component {
 
-  state = {
-    rows: [], 
-    // rows will be a list of PATIENT OBJECT
+  constructor() {
+    super()
+    let loggedIn = false
 
-    /*
-      PATIENT OBJECT SCHEMA
+    const token = localStorage.getItem("token")
+    if (token) loggedIn = true
+    
+    this.logout = this.logout.bind(this)
+    
+    this.state = {
+        loggedIn,
+        rows: [], // rows will be a list of PATIENT OBJECT
+    }
+  }
 
-      "name": String,
-      "location": String,
-      "temperature": int,
-      "spo2": int, // should be between 0-100 as it is %
-      "status": bool, // wether discharged from isolation or not
-      "condition": String,
-      "patientCategory": int, // only {1,2,3} // { 1: 'Student', 2: 'Faculty', 3: 'Staff' }
-    */
-
+  logout() {
+    this.setState({
+        loggedIn: false
+    })
+    // console.log(this.state);
   }
 
   componentDidMount() {
@@ -103,77 +111,95 @@ class App extends Component {
   }
 
   render() {
+    
+    if (this.state.loggedIn === false) {
+      return <Redirect to="../" />
+    }
+
     return (
-      <MaterialTable 
-        title="CoviApp Dashboard"
-        columns={
-          [
-            {
-              title: 'Name',
-              field: 'name'
-            },
-            {
-              title: 'Roll No/EC Code',
-              field: 'username'
-            },
-            {
-              title: 'Location',
-              field: 'location'
-            },
-            {
-              title: 'Temperature '+degree+'F',
-              field: 'temperature',
-              type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
+      <React.Fragment>
+        <Grid container justify="flex-end">
+          <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              onClick={this.logout}
+          >
+              Sign Out
+          </Button>
+        </Grid>
 
-            },
-            {
-              title: 'SpO2 %',
-              field: 'spo2',
-              type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
-              cellStyle: columnData => ({
-                backgroundColor: this._spo2Color(columnData),
-              }),
+        <MaterialTable 
+          title="CoviApp Dashboard"
+          columns={
+            [
+              {
+                title: 'Name',
+                field: 'name'
+              },
+              {
+                title: 'Roll No/EC Code',
+                field: 'username'
+              },
+              {
+                title: 'Location',
+                field: 'location'
+              },
+              {
+                title: 'Temperature '+degree+'F',
+                field: 'temperature',
+                type: "numeric",
+                customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
 
-            },
-            {
-              title: 'Discharged from Isolation',
-              field: 'status',
-              lookup: {0:'No',1:'Yes',},
-            },
-            {
-              title: 'Condition',
-              field: 'condition',
-              filtering: false,
-            },
-            {
-              title: 'Category',
-              field: 'patientCategory',
-              lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
-            },
+              },
+              {
+                title: 'SpO2 %',
+                field: 'spo2',
+                type: "numeric",
+                customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
+                cellStyle: columnData => ({
+                  backgroundColor: this._spo2Color(columnData),
+                }),
+
+              },
+              {
+                title: 'Discharged from Isolation',
+                field: 'status',
+                lookup: {0:'No',1:'Yes',},
+              },
+              {
+                title: 'Condition',
+                field: 'condition',
+                filtering: false,
+              },
+              {
+                title: 'Category',
+                field: 'patientCategory',
+                lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
+              },
+            ]}
+
+          data = {this.state.rows}
+          options={{
+            filtering: true,
+            exportButton: true,
+            exportAllData: true,
+            pageSize: 10,
+            search: true,
+            actionsColumnIndex: 1,
+          }}
+
+          actions={[
+            rowData => ({
+              icon: ArrowForwardIcon,
+              tooltip: 'Click to monitor',
+              onClick: () => {
+                this.props.history.push(`../graphs/${rowData.username}`)
+              }
+            })
           ]}
-
-        data = {this.state.rows}
-        options={{
-          filtering: true,
-          exportButton: true,
-          exportAllData: true,
-          pageSize: 10,
-          search: true,
-          actionsColumnIndex: 1,
-        }}
-
-        actions={[
-          rowData => ({
-            icon: ArrowForwardIcon,
-            tooltip: 'Click to monitor',
-            onClick: () => {
-              this.props.history.push(`../graphs/${rowData.username}`)
-            }
-          })
-        ]}
-      />
+        />
+      </React.Fragment>
     )
   }
 
