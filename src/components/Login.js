@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import {Redirect} from "react-router-dom"
+import { Redirect } from "react-router-dom"
 import Axios from "axios"
 
 class Login extends React.Component {
@@ -14,8 +14,10 @@ class Login extends React.Component {
     super()
     let loggedIn = false
 
+    // token stores if logged in...
     const token = localStorage.getItem("token")
     if (token) loggedIn = true
+    // todo: verify the tokens!
 
     this.state = {
       email: "",
@@ -23,8 +25,10 @@ class Login extends React.Component {
       loggedIn,
       error: ""
     }
+
     this.onChange = this.onChange.bind(this)
     this.formSubmit = this.formSubmit.bind(this)
+    // binding the functions so that we can access using a this pointer!
   }
 
   onChange(ev) {
@@ -33,14 +37,21 @@ class Login extends React.Component {
     })
   }
 
-  async formSubmit(ev) {
-    ev.preventDefault()
+  async formSubmit(event) {
+    // 1. Prevent the form from submitting!
+    event.preventDefault()
+
     try {
-      // console.log(this.state);
       const res = await Axios.post("https://reqres.in/api/login", { email: this.state.email, password: this.state.password })
+      // study what await is!
+      // also read up about axios!
+
       const jwtToken = res.data['token']
       // console.log(jwtToken)
+      
       localStorage.setItem("token", jwtToken)
+      // setting the token!
+
       this.setState({
         loggedIn: true
       })
@@ -61,10 +72,13 @@ class Login extends React.Component {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div >
+          
           <Typography component="h1" variant="h5" align="center">
             Sign in
-        </Typography>
+          </Typography>
+
           <form noValidate>
+
             <TextField
               variant="outlined"
               margin="normal"
@@ -77,6 +91,7 @@ class Login extends React.Component {
               autoFocus
               onChange={this.onChange}
             />
+
             <TextField
               variant="outlined"
               margin="normal"
@@ -89,6 +104,7 @@ class Login extends React.Component {
               autoComplete="current-password"
               onChange={this.onChange}
             />
+
             <Button
               type="submit"
               fullWidth
@@ -97,9 +113,11 @@ class Login extends React.Component {
               onClick={this.formSubmit}
             >
               Sign In
-          </Button>
+            </Button>
           </form>
-          {this.state.error}
+
+          {this.state.error}      
+          {/* Why are we doing this ? */}
         </div>
       </Container>
     );
