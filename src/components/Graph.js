@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Graph = () => {
+const Graph = (props) => {
 
   let loggedIn = false
   const classes = useStyles()
