@@ -48,7 +48,6 @@ const Dashboard = props => {
     setState({
         loggedIn: false
     })
-    // console.log(state);
   }
 
   useEffect(() => {
@@ -57,6 +56,9 @@ const Dashboard = props => {
     .then((data) => {
       setState({ rows: data.jsonUserData })
      })
+    .catch((err) =>{
+      console.log(err);
+    })
   }, [])
 
   const _spo2Color = spo2Value => {
