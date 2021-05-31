@@ -82,6 +82,7 @@ const Dashboard = props => {
       ).then(response => response.data)
     .then((data) => {
       const patientList=data.data;
+      console.log(data.data)
       setState({ rows: patientList })
      })
     .catch((error) =>{
@@ -141,15 +142,15 @@ const Dashboard = props => {
             },
             {
               title: 'Roll No/EC Code',
-              field: 'username'
+              field: 'ec_rollno'
             },
             {
               title: 'Location',
-              field: 'location'
+              field: 'isolation_address'
             },
             {
               title: 'Temperature '+degree+'F',
-              field: 'temperature',
+              field: 'fever',
               type: "numeric",
               customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
 
@@ -171,12 +172,12 @@ const Dashboard = props => {
             },
             {
               title: 'Condition',
-              field: 'condition',
+              field: 'patient_condition',
               filtering: false,
             },
             {
               title: 'Category',
-              field: 'patientCategory',
+              field: 'selected_category',
               lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
             },
           ]}
