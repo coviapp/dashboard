@@ -23,6 +23,12 @@ const useStyles = makeStyles({
   },
   menuButton: {
     marginRight: 2,
+    fontSize: 18,
+    fontFamily: "Comic sans ms",
+    backgroundColor: "#E0FFFF",
+    '&:hover': {
+      backgroundColor: "#FFFDD0",
+    }
   },
   title: {
     flexGrow: 1,
@@ -120,7 +126,7 @@ const Dashboard = props => {
             <Typography variant="h6" className={classes.title}>
               Welcome
             </Typography>
-            <Button style={{ background: '#BA55D3' }} onClick={logout}>Logout</Button>
+            <Button className={classes.menuButton} onClick={logout}>Logout</Button>
           </Toolbar>
         </AppBar>
       </div>
