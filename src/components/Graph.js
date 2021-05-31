@@ -1,11 +1,23 @@
 import { React, useState, Fragment } from 'react'
-import { Bar, Line } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
+import { findByLabelText } from '@testing-library/dom';
+import { Title } from 'chart.js';
 
 const useStyles = makeStyles({
   root: {
     backgroundColor: "#00C9BC",
+    margin: 10
+  },
+  graph: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  indivgraph: {
+    width: "47.5vw",
+    marginLeft: 10,
+    marginRight: 10,
   },
 });
 
@@ -38,71 +50,64 @@ const Graph = (props) => {
       </h2>   
       <br/>
 
-      <Line
-        data = {{
-            labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
-            datasets: [
-                {
-                    label: 'Temperature v/s time',
-                    data: [98, 100, 99, 102, 98],
-                    backgroundColor: 'rgba(0, 0, 255, 0.3)',
-                    borderColor: 'rgba(0, 0, 255, 1)',
-                    borderWidth: 1
+      <div className={classes.graph}>
+        <div className={classes.indivgraph}>
+          <Line
+            data = {{
+                labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
+                datasets: [
+                    {
+                        label: 'Temperature',
+                        data: [98, 100, 99, 102, 98],
+                        backgroundColor: 'rgba(0, 0, 255, 0.3)',
+                        borderColor: 'rgba(0, 0, 255, 1)',
+                        borderWidth: 1
+                    }
+                ] 
+            }}
+
+            options={{
+                responsive: true,
+                scales: {
+                    y:{
+                        ticks: {
+                            callback: function(value, index, values) {return value + '\xB0' + " F";},
+                        },
+                        
+                    }
                 },
-                {
-                    label: 'SpO2 v/s time',
-                    data: [94, 98, 81, 87, 92],
-                    backgroundColor: 'rgba(255, 0, 0, 0.3)',
-                    borderColor: 'rgba(255, 0, 0, 1)',
-                    borderWidth: 1
-                }
-            ] 
-        }}
+                
+            }}
+          />
+        </div>
 
-        options={{
-            scales: {
-                x:{
-                    beginAtZero: false
-                }
-            }
-        }}
-      />
+        <div className={classes.indivgraph}>
+          <Line
+            data = {{
+                labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
+                datasets: [
+                    {
+                        label: 'SpO2',
+                        data: [94, 98, 81, 87, 92],
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                        borderColor: 'rgba(255, 0, 0, 1)',
+                        borderWidth: 1
+                    }
+                ] 
+            }}
 
-      <br/>
-      <br/>
-
-      <Bar
-        data = {{
-          labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
-          datasets: [
-            {
-              label: 'Temperature v/s time',
-              data: [98, 100, 99, 102, 98],
-              backgroundColor: 'rgba(0, 0, 255, 0.3)',
-              borderColor: 'rgba(0, 0, 255, 1)',
-              borderWidth: 1
-            },
-            {
-              label: 'SpO2 v/s time',
-              data: [94, 98, 81, 87, 92],
-              backgroundColor: 'rgba(255, 0, 0, 0.3)',
-              borderColor: 'rgba(255, 0, 0, 1)',
-              borderWidth: 1
-            }
-          ] 
-        }}
-
-        height={200}
-        
-        options= {{
-          scales: {
-            y:{
-              beginAtZero: false
-            }
-          }
-        }}
-
-        />
+            options={{
+                responsive: true,
+                scales: {
+                    x:{
+                        beginAtZero: false
+                    }
+                },
+                
+            }}
+          />
+        </div>
+      </div>
       </Fragment>
   );
 
