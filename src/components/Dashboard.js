@@ -120,7 +120,7 @@ const Dashboard = props => {
             <Typography variant="h6" className={classes.title}>
               Welcome
             </Typography>
-            <Button color="inherit" onClick={logout}>Logout</Button>
+            <Button style={{ background: '#BA55D3' }} onClick={logout}>Logout</Button>
           </Toolbar>
         </AppBar>
       </div>
