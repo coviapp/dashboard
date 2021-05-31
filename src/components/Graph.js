@@ -2,9 +2,9 @@ import { React, useState, Fragment } from 'react'
 import { Line } from 'react-chartjs-2'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import MaterialTable from 'material-table'
+import StudentData from  './StudentData'
 import Axios from 'axios'
-
+// TODO: Api integration!
 
 const useStyles = makeStyles({
   root: {
@@ -25,9 +25,10 @@ const useStyles = makeStyles({
     marginTop: 40,
     marginBottom: 40
   },
-  header: {
-    textAlign: "center"
-  }
+  newtable: {
+    display: "flex",
+    flexDirection: "column"
+  },
 });
 
 const Graph = (props) => {
@@ -51,11 +52,16 @@ const Graph = (props) => {
     
   let content = (
     <Fragment>
-      <h2 className={classes.header}>
-          Displaying information for user { myUsername }
-      </h2>   
-      <br/>
+      <div className={classes.sep}>
+      </div>
 
+      <div className={classes.newtable}>
+        <StudentData className={classes.table}/>
+      </div>
+
+      <div className={classes.sep}>
+      </div>
+      
       <div className={classes.graph}>
         <div className={classes.indivgraph}>
           <Line
