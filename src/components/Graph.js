@@ -1,9 +1,10 @@
 import { React, useState, Fragment } from 'react'
 import { Line } from 'react-chartjs-2'
 import { Redirect } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
-import { findByLabelText } from '@testing-library/dom';
-import { Title } from 'chart.js';
+import { makeStyles } from '@material-ui/core/styles'
+import MaterialTable from 'material-table'
+import Axios from 'axios'
+
 
 const useStyles = makeStyles({
   root: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles({
   sep: {
     marginTop: 40,
     marginBottom: 40
+  },
+  header: {
+    textAlign: "center"
   }
 });
 
@@ -44,15 +48,11 @@ const Graph = (props) => {
   }
 
   const myUsername = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-  console.log("Plotted graph for " + myUsername)
-  console.log(window.innerWidth)
     
   let content = (
     <Fragment>
-      <h2 id="header">
+      <h2 className={classes.header}>
           Displaying information for user { myUsername }
-          <br/>
-          Todo: Display other info!
       </h2>   
       <br/>
 
@@ -134,7 +134,7 @@ const Graph = (props) => {
 
         <div className={classes.sep}>
         </div>
-        
+
       </div>
       </Fragment>
   );
