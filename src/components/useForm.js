@@ -17,25 +17,47 @@ const useForm = initialValues => {
             e.preventDefault()
 
             Axios
-                .post("https://reqres.in/api/login", { 
-                    email: values.email, 
+                .post("https://imedixbcr.iitkgp.ac.in/api/user/login", { 
+                    username: values.email, 
                     password: values.password 
                 })
                 .then(res => {
-                    console.log("Here")
-                    const jwtToken = res.data['token']
+                    const jwtToken = res.data['jwtToken']
                     localStorage.setItem("token", jwtToken)
                     setValues({
                         ...values,
                         loggedIn: true
                     })
                 })
-                .catch(err => {
-                    console.log(err.message)
-                    setValues({
-                        ...values,
-                        error: err.message
-                    })
+                .catch(error => {
+                    if (error.response) {
+                        // Request made and server responded
+                        // console.log(error.response.data);
+                        // console.log(error.response.status);
+                        // console.log(error.response.headers);
+
+                        setValues({
+                            ...values,
+                            error: error.response.data.error
+                        })
+                      } else if (error.request) {
+
+                        // The request was made but no response was received
+                        // console.log(error.request);
+
+                        setValues({
+                            ...values,
+                            error: error.request
+                        })
+                      } else {
+                        // Something happened in setting up the request that triggered an Error
+                        // console.log(error.message);
+
+                        setValues({
+                            ...values,
+                            error: error.message
+                        })
+                      }
                 })
         }
     ]

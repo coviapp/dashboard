@@ -35,13 +35,26 @@ const Dashboard = props => {
   
   const token = localStorage.getItem("token")
   if (token) loggedIn = true
-  // Todo: verify token
+  // TODO: verify token
   
   const classes = useStyles();
   
   const [state, setState] = useState({
       loggedIn: loggedIn,
       rows: [], // rows will be a list of PATIENT OBJECT
+      fetchError: false,
+
+      /*
+      PATIENT OBJECT SCHEMA
+
+      "name": String,
+      "location": String,
+      "temperature": int,
+      "spo2": int, // should be between 0-100 as it is %
+      "status": bool, // wether discharged from isolation or not
+      "condition": String,
+      "patientCategory": int, // only {1,2,3} // { 1: 'Student', 2: 'Faculty', 3: 'Staff' }
+    */
   })
 
   const logout = () => {
@@ -51,13 +64,23 @@ const Dashboard = props => {
   }
 
   useEffect(() => {
-    const url = "https://aryan57.github.io/json_dumps/data.json";
-    axios.get(url).then(response => response.data)
+    const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
+    axios.get(
+      url,
+      config
+      ).then(response => response.data)
     .then((data) => {
-      setState({ rows: data.jsonUserData })
+      const patientList=data.data;
+      setState({ rows: patientList })
      })
-    .catch((err) =>{
-      console.log(err);
+    .catch((error) =>{
+      setState({fetchError:true})
+      // console.log(error.message)
     })
   }, [])
 
@@ -71,8 +94,26 @@ const Dashboard = props => {
     return <Redirect to="/logout" />
   }
 
+  function ErrorDialog() {
+    if (state.fetchError) {
+      return <React.Fragment>
+        <div className={classes.root}>
+        <AppBar position="static" style={{ background: '#ffe6e6' }} className={classes.root}>
+          <Toolbar>
+            <Typography color="error" variant="h6" className={classes.title}>
+              Some error occured. Please Logout
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
+      </React.Fragment>;
+    }
+    return <React.Fragment></React.Fragment>;
+  }
+
   let content = (
-    <React.Fragment> 
+    <React.Fragment>
+      < ErrorDialog />
       <div className={classes.root}>
         <AppBar position="static" className={classes.root}>
           <Toolbar>
