@@ -12,13 +12,18 @@ const useStyles = makeStyles({
   },
   graph: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'column'
   },
   indivgraph: {
-    width: "47.5vw",
-    marginLeft: 10,
-    marginRight: 10,
+    // responsive: true,
+    width: "90vw",
+    maxWidth: 1200,
+    alignSelf: "center"
   },
+  sep: {
+    marginTop: 40,
+    marginBottom: 40
+  }
 });
 
 const Graph = (props) => {
@@ -40,6 +45,7 @@ const Graph = (props) => {
 
   const myUsername = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
   console.log("Plotted graph for " + myUsername)
+  console.log(window.innerWidth)
     
   let content = (
     <Fragment>
@@ -67,18 +73,29 @@ const Graph = (props) => {
             }}
 
             options={{
-                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Temperature v/s time',
+                    font: {
+                      size: 20
+                    }
+                  }
+                },
                 scales: {
                     y:{
-                        ticks: {
-                            callback: function(value, index, values) {return value + '\xB0' + " F";},
+                      ticks: {
+                        callback: function(value) {
+                          return value + '\xB0' + " F";
                         },
-                        
+                      }  
                     }
-                },
-                
+                }    
             }}
           />
+        </div>
+
+        <div className={classes.sep}>
         </div>
 
         <div className={classes.indivgraph}>
@@ -97,16 +114,27 @@ const Graph = (props) => {
             }}
 
             options={{
-                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'SpO2 v/s time',
+                    font: {
+                      size: 20
+                    }
+                  }
+                },
                 scales: {
                     x:{
                         beginAtZero: false
                     }
                 },
-                
             }}
           />
         </div>
+
+        <div className={classes.sep}>
+        </div>
+        
       </div>
       </Fragment>
   );
