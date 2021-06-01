@@ -18,12 +18,14 @@ const useForm = initialValues => {
 
             Axios
                 .post("https://imedixbcr.iitkgp.ac.in/api/user/login", { 
-                    username: values.email, 
+                    username: values.username, 
                     password: values.password 
                 })
                 .then(res => {
                     const jwtToken = res.data['jwtToken']
                     localStorage.setItem("token", jwtToken)
+                    localStorage.setItem("username", values.username)
+                    localStorage.setItem("password", values.password)
                     setValues({
                         ...values,
                         loggedIn: true
