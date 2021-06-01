@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import StudentData from  './StudentData'
 import axios from 'axios'
+import date from 'date-and-time'
 // TODO: Api integration!
 
 const useStyles = makeStyles({
@@ -38,47 +39,51 @@ const Graph = (props) => {
   const token = localStorage.getItem("token")
   if (token) loggedIn = true
   // Todo: Verify the token
-  console.log(props.location.state)
-  const patientId = props.location.state['pat_id']
-  console.log(patientId)
   
   const [state, setState] = useState({
       loggedIn: loggedIn,
+      entryTime: [],
+      spo2Data: [],
+      tempData: [],
   })
 
   useEffect(() => {
-    const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-patient-data";
-    const token = localStorage.getItem("token");
-    console.log(token)
-    console.log(patientId)
+    const getPatientData = async () => {
+      const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-patient-data";
+      const token = localStorage.getItem("token");
+      const patientId = props.location.state['pat_id']
 
-    const bodyParams = {
-      patid: patientId
-    }
+      const bodyParams = {
+        patid: patientId
+      }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      try {
+        const res = await axios.post(url, bodyParams, config)
+        const vals = res.data.data
+        console.log(vals)
+
+        setState({
+          entryTime: vals.map((entry) => {
+            const entryDate = new Date(entry['entrytime'])
+            return date.format(entryDate, 'HH:MM DD MMM')
+          }),
+          spo2Data: vals.map((entry) => entry['spo2']),
+          tempData: vals.map((entry) => entry['fever'])
+        })
+
+      } catch(error) {
+        console.log("Error!")
+        console.log(error.message)
       }
     }
 
-    axios.post(
-      url, 
-      bodyParams,
-      config
-    ) .then(response => response.data)
-      .then((data) => {
-        console.log("Okay!")
-        console.log(data)
-        // const patientList=data.data;
-        // console.log(data.data)
-        // setState({ rows: patientList })
-      })
-      .catch((error) =>{
-        // setState({fetchError:true})
-        console.log(error)
-        console.log(error.message)
-    })
+    getPatientData()
   }, [])
     
   if (state.loggedIn === false) {
@@ -101,11 +106,11 @@ const Graph = (props) => {
         <div className={classes.indivgraph}>
           <Line
             data = {{
-                labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
+                labels: state.entryTime,
                 datasets: [
                     {
                         label: 'Temperature',
-                        data: [98, 100, 99, 102, 98],
+                        data: state.tempData,
                         backgroundColor: 'rgba(0, 0, 255, 0.3)',
                         borderColor: 'rgba(0, 0, 255, 1)',
                         borderWidth: 1
@@ -142,11 +147,11 @@ const Graph = (props) => {
         <div className={classes.indivgraph}>
           <Line
             data = {{
-                labels: ['9:00', '12:00', '15:00', '18:00', '21:00',],
+                labels: state.entryTime,
                 datasets: [
                     {
                         label: 'SpO2',
-                        data: [94, 98, 81, 87, 92],
+                        data: state.spo2Data,
                         backgroundColor: 'rgba(255, 0, 0, 0.3)',
                         borderColor: 'rgba(255, 0, 0, 1)',
                         borderWidth: 1
@@ -179,6 +184,10 @@ const Graph = (props) => {
       </div>
       </Fragment>
   );
+
+  console.log(state.entryTime)
+  console.log(state.spo2Data)
+  console.log(state.tempData)
 
   return content
 }
