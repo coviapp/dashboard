@@ -10,6 +10,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Footer from './Footer'
 
+const degree = '\xB0'
+
 const useStyles = makeStyles({
   appbar: {
     backgroundColor: "#00C9BC",
@@ -106,7 +108,7 @@ const Graph = (props) => {
       }
     }
     getPatientData()
-  }, [])
+  }, [props.location.state])
     
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />
@@ -165,7 +167,7 @@ const Graph = (props) => {
                     y:{
                       ticks: {
                         callback: function(value) {
-                          return value + '\xB0' + " F";
+                          return `value${degree} F`
                         },
                       }  
                     }
