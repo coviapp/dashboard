@@ -10,11 +10,13 @@ import Paper from '@material-ui/core/Paper';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#191970",
     color: theme.palette.common.white,
+    fontSize: 20,
+    fontWeight: "bold"
   },
   body: {
-    fontSize: 14,
+    fontSize: 16,
   },
 }))(TableCell);
 
@@ -26,17 +28,9 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories) {
-  return { name, calories};
+function createData(name, details) {
+  return { name, details };
 }
-
-const rows = [
-  createData('Name', "Aden Lara"),
-  createData('Roll No / EC Number', "19CS10011"),
-  createData('Phone Number', "9827348571"),
-  createData('Category', "Student"),
-  createData('Parent\'s mobile number', "9182736451"),
-];
 
 const useStyles = makeStyles({
   table: {
@@ -46,8 +40,19 @@ const useStyles = makeStyles({
   }
 });
 
-export default function StudentData() {
+export default function StudentData(data) {
   const classes = useStyles();
+  data = data.data
+
+  const patientId = data['pat_id']
+
+  const rows = [
+    createData('Name', data['name']),
+    createData('Roll No / EC Number', data['ec_rollno']),
+    createData('Phone Number', data['phone']),
+    createData('Category', data['selected_category']),
+    createData('Parent\'s mobile number', data['parent_mobileno']),
+  ];
 
   return (
     <TableContainer component={Paper} className={classes.table}>
@@ -64,7 +69,7 @@ export default function StudentData() {
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="left">{row.calories}</StyledTableCell>
+              <StyledTableCell align="left">{row.details}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

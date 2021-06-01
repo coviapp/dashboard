@@ -16,7 +16,6 @@ const useStyles = makeStyles({
     flexDirection: 'column'
   },
   indivgraph: {
-    // responsive: true,
     width: "90vw",
     maxWidth: 1200,
     alignSelf: "center"
@@ -47,8 +46,6 @@ const Graph = (props) => {
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />
   }
-
-  const myUsername = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     
   let content = (
     <Fragment>
@@ -56,7 +53,7 @@ const Graph = (props) => {
       </div>
 
       <div className={classes.newtable}>
-        <StudentData className={classes.table}/>
+        <StudentData className={classes.table} data={props.location.state}/>
       </div>
 
       <div className={classes.sep}>

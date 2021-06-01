@@ -141,7 +141,12 @@ const Dashboard = props => {
               field: 'name'
             },
             {
-              title: 'Roll No/EC Code',
+              title: 'Category',
+              field: 'selected_category',
+              // lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
+            },
+            {
+              title: 'Roll No/EC ',
               field: 'ec_rollno'
             },
             {
@@ -175,11 +180,6 @@ const Dashboard = props => {
               field: 'patient_condition',
               filtering: false,
             },
-            {
-              title: 'Category',
-              field: 'selected_category',
-              lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
-            },
           ]}
 
         data = {state.rows}
@@ -190,6 +190,13 @@ const Dashboard = props => {
           pageSize: 10,
           search: true,
           actionsColumnIndex: 1,
+          headerStyle: {
+            fontSize: 20,
+            align: "center"
+          },
+          rowStyle: {
+            fontSize: 19
+          }
         }}
 
         actions={[
@@ -197,7 +204,10 @@ const Dashboard = props => {
             icon: ArrowForwardIcon,
             tooltip: 'Click to monitor',
             onClick: () => {
-              props.history.push(`../graphs/${rowData.username}`)
+              props.history.push({
+                pathname: `../graphs/${rowData.ec_rollno}`,
+                state: rowData
+              })
             }
           })
         ]}
