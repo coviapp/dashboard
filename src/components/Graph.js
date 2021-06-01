@@ -5,12 +5,23 @@ import { makeStyles } from '@material-ui/core/styles'
 import StudentData from  './StudentData'
 import axios from 'axios'
 import date from 'date-and-time'
-// TODO: Api integration!
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
+  appbar: {
+    backgroundColor: "#00C9BC",
+    borderRadius: 6,
+    fontWeight: "bold",
+  },
   root: {
     backgroundColor: "#00C9BC",
-    margin: 10
+  },
+  title: {
+    flexGrow: 1,
+    fontSize: 25,
+    fontWeight: "bold"
   },
   graph: {
     display: 'flex',
@@ -102,6 +113,17 @@ const Graph = (props) => {
     
   let content = (
     <Fragment>
+      
+      <div className={classes.appbar}>
+        <AppBar position="static" className={classes.appbar}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Currently monitoring {props.location.state['name']}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
+
       <div className={classes.sep}>
       </div>
 

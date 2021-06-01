@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
-import axios from 'axios';
+import axios from 'axios'
 
-// Importing Icons
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Button from "@material-ui/core/Button";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import Button from "@material-ui/core/Button"
 import { Redirect } from "react-router-dom"
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
-const degree = String.fromCharCode(parseInt("00B0", 16));
-const spo2UpperBound = 95;
-const spo2LowerBound = 90;
+const degree = '\xB0'
+const spo2UpperBound = 95
+const spo2LowerBound = 90
 
 const useStyles = makeStyles({
   root: {
@@ -35,7 +34,7 @@ const useStyles = makeStyles({
     fontSize: 25,
     fontWeight: "bold"
   },
-});
+})
 
 const Dashboard = props => {
 
@@ -60,7 +59,7 @@ const Dashboard = props => {
     const token = localStorage.getItem("token");
     const config = {
       headers: { Authorization: `Bearer ${token}` }
-    };
+    }
     axios.get(
       url,
       config
