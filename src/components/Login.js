@@ -4,11 +4,26 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import useForm from './useForm'
-
 import { Redirect } from "react-router-dom"
+import { makeStyles } from '@material-ui/core/styles'
+import Background from '../imgs/bcrth.jpg'
+
+const useStyles = makeStyles({
+  sep: {
+    margin: 20
+  },
+  header: {
+    paddingTop: 40,
+    textAlign: "center",
+    color: "black",
+    fontSize: 40,
+    fontWeight: "bold"
+  }
+})
 
 const Login = () => { 
   let loggedIn = false
+  const classes = useStyles()
 
   const token = localStorage.getItem("token")
   if (token) loggedIn = true
@@ -26,13 +41,22 @@ const Login = () => {
   }
   
   let content =  (
-    <Container component="main" maxWidth="xs">
+    <div
+      style={{
+        backgroundImage: `url(${Background})`,
+        backgroundSize: 'cover',
+        height: '100vh',
+        margin: 0
+      }}
+    >
+      <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div >
+      
+      <div>
         
-        <Typography component="h1" variant="h5" align="center">
+        <div className={classes.header}>
           Sign in
-        </Typography>
+        </div>
 
         <form noValidate>
 
@@ -48,6 +72,7 @@ const Login = () => {
             value={state.username}
             autoFocus
             onChange={handleChange}
+            InputLabelProps={{style: {fontSize: 21, fontWeight: "bold"}}}
           />
 
           <TextField
@@ -62,6 +87,7 @@ const Login = () => {
             value={state.password}
             autoComplete="current-password"
             onChange={handleChange}
+            InputLabelProps={{style: {fontSize: 21, fontWeight: "bold"}}}
           />
 
           <Button
@@ -81,7 +107,8 @@ const Login = () => {
         
       </div>
     </Container>
-  );
+    </div>
+  )
 
   return content
 }

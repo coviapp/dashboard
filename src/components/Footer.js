@@ -8,8 +8,6 @@ const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     backgroundColor: 'black',
-    // paddingTop: theme.spacing.unit * 2,
-    // paddingBottom: theme.spacing.unit * 2,
   },
   footer: {
     backgroundColor: 'black',
