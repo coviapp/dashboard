@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
+import Footer from './Footer'
 
 const degree = '\xB0'
 const spo2UpperBound = 95
@@ -134,6 +135,7 @@ const Dashboard = props => {
   let content = (
     <React.Fragment>
       < ErrorDialog />
+      
       <div className={classes.root}>
         <AppBar position="static" className={classes.root}>
           <Toolbar>
@@ -144,6 +146,7 @@ const Dashboard = props => {
           </Toolbar>
         </AppBar>
       </div>
+
       <MaterialTable
         title="CoviApp Dashboard"
         columns={
@@ -223,6 +226,8 @@ const Dashboard = props => {
           })
         ]}
       />
+      
+      <Footer></Footer>
     </React.Fragment>
   )
   return content

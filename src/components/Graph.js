@@ -8,6 +8,7 @@ import date from 'date-and-time'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
+import Footer from './Footer'
 
 const useStyles = makeStyles({
   appbar: {
@@ -214,6 +215,8 @@ const Graph = (props) => {
         </div>
 
       </div>
+
+      <Footer></Footer>
       </Fragment>
   );
 
