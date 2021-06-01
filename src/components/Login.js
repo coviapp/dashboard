@@ -15,7 +15,7 @@ const Login = () => {
   // todo: verify the tokens!
 
   const [ state, handleChange, formSubmit ] = useForm({
-    email: "",
+    username: "",
     password: "",
     loggedIn: loggedIn,
     error: ""
@@ -41,11 +41,11 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={state.email}
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            value={state.username}
             autoFocus
             onChange={handleChange}
           />

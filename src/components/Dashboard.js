@@ -12,9 +12,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 const degree = String.fromCharCode(parseInt("00B0", 16));
-const spo2UpperBound=95;
-const spo2LowerBound=90;
- 
+const spo2UpperBound = 95;
+const spo2LowerBound = 90;
+
 const useStyles = makeStyles({
   root: {
     backgroundColor: "#00C9BC",
@@ -38,36 +38,20 @@ const useStyles = makeStyles({
 });
 
 const Dashboard = props => {
-  
+
   let loggedIn = false
-  
   const token = localStorage.getItem("token")
   if (token) loggedIn = true
-  // TODO: verify token
-  
   const classes = useStyles();
-  
   const [state, setState] = useState({
-      loggedIn: loggedIn,
-      rows: [], // rows will be a list of PATIENT OBJECT
-      fetchError: false,
-
-      /*
-      PATIENT OBJECT SCHEMA
-
-      "name": String,
-      "location": String,
-      "temperature": int,
-      "spo2": int, // should be between 0-100 as it is %
-      "status": bool, // wether discharged from isolation or not
-      "condition": String,
-      "patientCategory": int, // only {1,2,3} // { 1: 'Student', 2: 'Faculty', 3: 'Staff' }
-    */
+    loggedIn: loggedIn,
+    rows: [], // rows will be a list of PATIENT OBJECT
+    fetchError: false,
   })
 
   const logout = () => {
     setState({
-        loggedIn: false
+      loggedIn: false
     })
   }
 
@@ -77,21 +61,49 @@ const Dashboard = props => {
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-
     axios.get(
       url,
       config
-      )
-      .then(response => response.data)
+    ).then(response => response.data)
       .then((data) => {
-        const patientList=data.data;
-        // console.log(data.data)
+        const patientList = data.data;
+        console.log(data.data)
         setState({ rows: patientList })
       })
-      .catch((error) =>{
-        setState({fetchError:true})
-        // console.log(error.message)
-    })
+      .catch((error) => {
+        console.log('token is expired logging in again for getting jwt');
+        axios.post("https://imedixbcr.iitkgp.ac.in/api/user/login", {
+          username: localStorage.getItem("username"),
+          password: localStorage.getItem("password")
+        }).then(res => {
+          const newJwtToken = res.data['jwtToken']
+          localStorage.setItem("token", newJwtToken)
+
+          const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
+          const token = localStorage.getItem("token");
+          const config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+          axios.get(
+            url,
+            config
+          ).then(response => response.data)
+            .then((data) => {
+              const patientList = data.data;
+              console.log(data.data)
+              setState({ rows: patientList })
+            })
+            .catch((error) => {
+              console.log('error in fetching get-all-patients');
+              setState({ fetchError: true })
+              // console.log(error.message)
+            })
+          }).catch(error => {
+            console.log('error in logging in again from local-storage credentials');
+          setState({ fetchError: true })
+          // console.log(error.message)
+        })
+      })
   }, [])
 
   const _spo2Color = spo2Value => {
@@ -99,7 +111,6 @@ const Dashboard = props => {
     if (spo2Value >= spo2LowerBound) return 'orange';
     return 'red';
   }
-    
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />
   }
@@ -108,14 +119,14 @@ const Dashboard = props => {
     if (state.fetchError) {
       return <React.Fragment>
         <div className={classes.root}>
-        <AppBar position="static" style={{ background: '#ffe6e6' }} className={classes.root}>
-          <Toolbar>
-            <Typography color="error" variant="h6" className={classes.title}>
-              Some error occured. Please Logout
+          <AppBar position="static" style={{ background: '#ffe6e6' }} className={classes.root}>
+            <Toolbar>
+              <Typography color="error" variant="h6" className={classes.title}>
+                Some error occured. Please Logout
             </Typography>
-          </Toolbar>
-        </AppBar>
-      </div>
+            </Toolbar>
+          </AppBar>
+        </div>
       </React.Fragment>;
     }
     return <></>;
@@ -134,8 +145,7 @@ const Dashboard = props => {
           </Toolbar>
         </AppBar>
       </div>
-
-      <MaterialTable 
+      <MaterialTable
         title="CoviApp Dashboard"
         columns={
           [
@@ -157,11 +167,10 @@ const Dashboard = props => {
               field: 'isolation_address'
             },
             {
-              title: 'Temperature '+degree+'F',
+              title: 'Temperature ' + degree + 'F',
               field: 'fever',
               type: "numeric",
               customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
-
             },
             {
               title: 'SpO2 %',
@@ -176,7 +185,7 @@ const Dashboard = props => {
             {
               title: 'Discharged from Isolation',
               field: 'status',
-              lookup: {0:'No',1:'Yes',},
+              lookup: { 0: 'No', 1: 'Yes', },
             },
             {
               title: 'Condition',
@@ -185,7 +194,7 @@ const Dashboard = props => {
             },
           ]}
 
-        data = {state.rows}
+        data={state.rows}
         options={{
           filtering: true,
           exportButton: true,
