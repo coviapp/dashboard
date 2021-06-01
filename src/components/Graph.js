@@ -48,6 +48,7 @@ const Graph = (props) => {
   })
 
   useEffect(() => {
+
     const getPatientData = async () => {
       const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-patient-data";
       const token = localStorage.getItem("token");
@@ -76,13 +77,22 @@ const Graph = (props) => {
           spo2Data: vals.map((entry) => entry['spo2']),
           tempData: vals.map((entry) => entry['fever'])
         })
-
       } catch(error) {
-        console.log("Error!")
-        console.log(error.message)
+        console.log("Logging in again!")
+        try {
+          const retry = await axios.post("https://imedixbcr.iitkgp.ac.in/api/user/login", {
+            username: localStorage.getItem("username"),
+            password: localStorage.getItem("password")
+          })
+          const newJwt = retry.data['jwtToken']
+          localStorage.setItem("token", newJwt)
+        } catch(error) {
+          console.log("Caught an error in re login!")
+          console.log(error)
+        }        
+        getPatientData()
       }
     }
-
     getPatientData()
   }, [])
     
@@ -184,10 +194,6 @@ const Graph = (props) => {
       </div>
       </Fragment>
   );
-
-  console.log(state.entryTime)
-  console.log(state.spo2Data)
-  console.log(state.tempData)
 
   return content
 }
