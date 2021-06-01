@@ -32,6 +32,8 @@ const useStyles = makeStyles({
   },
   title: {
     flexGrow: 1,
+    fontSize: 25,
+    fontWeight: "bold"
   },
 });
 
@@ -79,15 +81,16 @@ const Dashboard = props => {
     axios.get(
       url,
       config
-      ).then(response => response.data)
-    .then((data) => {
-      const patientList=data.data;
-      console.log(data.data)
-      setState({ rows: patientList })
-     })
-    .catch((error) =>{
-      setState({fetchError:true})
-      // console.log(error.message)
+      )
+      .then(response => response.data)
+      .then((data) => {
+        const patientList=data.data;
+        // console.log(data.data)
+        setState({ rows: patientList })
+      })
+      .catch((error) =>{
+        setState({fetchError:true})
+        // console.log(error.message)
     })
   }, [])
 
@@ -115,7 +118,7 @@ const Dashboard = props => {
       </div>
       </React.Fragment>;
     }
-    return <React.Fragment></React.Fragment>;
+    return <></>;
   }
 
   let content = (
@@ -192,7 +195,7 @@ const Dashboard = props => {
           actionsColumnIndex: 1,
           headerStyle: {
             fontSize: 20,
-            align: "center"
+            // fontFamily: "Times New Roman"
           },
           rowStyle: {
             fontSize: 19

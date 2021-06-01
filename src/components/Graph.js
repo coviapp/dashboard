@@ -1,9 +1,9 @@
-import { React, useState, Fragment } from 'react'
+import { React, useState, Fragment, useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import StudentData from  './StudentData'
-import Axios from 'axios'
+import axios from 'axios'
 // TODO: Api integration!
 
 const useStyles = makeStyles({
@@ -38,10 +38,48 @@ const Graph = (props) => {
   const token = localStorage.getItem("token")
   if (token) loggedIn = true
   // Todo: Verify the token
+  console.log(props.location.state)
+  const patientId = props.location.state['pat_id']
+  console.log(patientId)
   
   const [state, setState] = useState({
       loggedIn: loggedIn,
   })
+
+  useEffect(() => {
+    const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-patient-data";
+    const token = localStorage.getItem("token");
+    console.log(token)
+    console.log(patientId)
+
+    const bodyParams = {
+      patid: patientId
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+
+    axios.post(
+      url, 
+      bodyParams,
+      config
+    ) .then(response => response.data)
+      .then((data) => {
+        console.log("Okay!")
+        console.log(data)
+        // const patientList=data.data;
+        // console.log(data.data)
+        // setState({ rows: patientList })
+      })
+      .catch((error) =>{
+        // setState({fetchError:true})
+        console.log(error)
+        console.log(error.message)
+    })
+  }, [])
     
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />

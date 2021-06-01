@@ -44,8 +44,6 @@ export default function StudentData(data) {
   const classes = useStyles();
   data = data.data
 
-  const patientId = data['pat_id']
-
   const rows = [
     createData('Name', data['name']),
     createData('Roll No / EC Number', data['ec_rollno']),
