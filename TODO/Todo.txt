@@ -1,16 +1,7 @@
 What's left for the dashboard?
-
-    1. API integration: For info regarding the process of using the API, 
-        read the document uploaded in the documents folder of the repo** 
     
-    2. Update the dashboard and the graph data after reading data from the server**
+    1. Another table for monitoring the data grouped according to the entry date would be useful.
     
-    3. For the graphs section, prepare a table for displaying the basic info of the students**
-    
-    4. Another table for monitoring the data grouped according to the entry date would be useful.
-    
-    5. CSS styling of the website to improve the interface.
+    2. CSS styling of the website to improve the interface.
 
 ** : IMPORTANT!!
-
-This document will be updated so keep checking this out.
