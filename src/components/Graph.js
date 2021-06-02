@@ -215,7 +215,7 @@ const Graph = (props) => {
 
         <div className={classes.sep}>
         </div>
-
+      
       </div>
 
       <Footer></Footer>
