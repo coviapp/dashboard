@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ef7526ad-312d-4760-b26b-83eab223bb71/deploy-status)](https://app.netlify.com/sites/nervous-heisenberg-079600/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ef7526ad-312d-4760-b26b-83eab223bb71/deploy-status)](https://app.netlify.com/sites/coviapp/deploys)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -67,7 +67,7 @@ const Dashboard = props => {
     ).then(response => response.data)
       .then((data) => {
         const patientList = data.data;
-        console.log(data.data)
+        // console.log(data.data)
         setState({ rows: patientList })
       })
       .catch((error) => {
@@ -90,7 +90,7 @@ const Dashboard = props => {
           ).then(response => response.data)
             .then((data) => {
               const patientList = data.data;
-              console.log(data.data)
+              // console.log(data.data)
               setState({ rows: patientList })
             })
             .catch((error) => {

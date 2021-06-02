@@ -1,7 +1,0 @@
-What's left for the dashboard?
-    
-    1. Another table for monitoring the data grouped according to the entry date would be useful.
-    
-    2. CSS styling of the website to improve the interface.
-
-** : IMPORTANT!!

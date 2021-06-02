@@ -7,7 +7,7 @@ const useForm = initialValues => {
     return [
         values,
         e => {
-            console.log(e)
+            // console.log(e)
             setValues({
                 ...values,
                 [e.target.name]: e.target.value
