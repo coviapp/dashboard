@@ -27,7 +27,7 @@ function Footer(props) {
     <footer className={classes.footer}>
       <Paper className={classes.root} elevation={1}>
         <Typography align="center" className={classes.textProps}>
-          &copy; CoviApp Organization, All rights reserved
+        &copy;<a href="https://github.com/coviapp">CoviApp Organization</a>, All rights reserved
         </Typography>
       </Paper>
     </footer>
