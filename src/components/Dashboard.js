@@ -62,9 +62,8 @@ const Dashboard = props => {
   }
 
   useEffect(() => {
-
     const getData = async() => {
-      console.log("Making a request!")
+      // console.log("Making a request!")
       const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
       const token = localStorage.getItem("token");
       const config = {
@@ -121,7 +120,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                console.log(data.data)
+                // console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
@@ -136,6 +135,8 @@ const Dashboard = props => {
           })
         })
       }
+      
+      getData()
       const interval = setInterval(() => {
         getData()
       }, 20000)
