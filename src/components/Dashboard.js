@@ -10,6 +10,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Footer from './Footer'
+import date from 'date-and-time'
 
 const degree = '\xB0'
 const spo2UpperBound = 95
@@ -68,6 +69,28 @@ const Dashboard = props => {
       .then((data) => {
         const patientList = data.data;
         // console.log(data.data)
+        /*
+        Response structure:
+          dateofbirth: "1990-06-15"
+          ec_rollno: "445566"
+          entrytime: "2021-06-02T11:26:20.000+00:00"
+          fever: 97
+          food_supply: "yes"
+          hall: "BRH"
+          have_covid: "yes"
+          isolation_address: "SAM"
+          isolation_date: "0006-12-11T18:30:00.000+00:00"
+          name: "coviapp demo2"
+          parent_mobileno: "1234567879"
+          pat_id: "BCRT0192805210001"
+          patient_condition: "ok"
+          phone: "2235488795"
+          selected_category: "PhD Student(Inst./Sponsored)"
+          spo2: 97
+          supervisor_mobileno: "123456789"
+          supervisor_name: "ABC"
+          symptoms: "feverish"
+         */
         setState({ rows: patientList })
       })
       .catch((error) => {
@@ -90,7 +113,7 @@ const Dashboard = props => {
           ).then(response => response.data)
             .then((data) => {
               const patientList = data.data;
-              // console.log(data.data)
+              console.log(data.data)
               setState({ rows: patientList })
             })
             .catch((error) => {
@@ -185,14 +208,34 @@ const Dashboard = props => {
 
             },
             {
-              title: 'Discharged from Isolation',
-              field: 'status',
-              lookup: { 0: 'No', 1: 'Yes', },
+              title: 'Pulse Rate',
+              field: 'pulse',
+              type: "numeric",
+              customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
             },
+            {
+              title: 'Respiratory Rate',
+              field: 'resp',
+              type: "numeric",
+              customFilterAndSearch: (term, rowData) => term >= rowData.resp,
+            },
+            // {
+            //   title: 'Discharged from Isolation',
+            //   field: 'status',
+            //   lookup: { 0: 'No', 1: 'Yes', },
+            // },
             {
               title: 'Condition',
               field: 'patient_condition',
               filtering: false,
+            },
+            {
+              title: 'Last Updated',
+              field: 'entrytime',
+              render: columnData => {
+                const chkDate = new Date(columnData['entrytime'])
+                return date.format(chkDate, 'HH:MM DD/MM/YY')
+              }
             },
           ]}
 
