@@ -197,7 +197,7 @@ const Graph = (props) => {
                 y: {
                   ticks: {
                     callback: function (value) {
-                      return `value${degree} F`
+                      return `${value}${degree} F`
                     },
                   }
                 }
@@ -290,6 +290,13 @@ const Graph = (props) => {
           filtering: true,
           exportButton: true,
           exportAllData: true,
+          headerStyle: {
+            fontSize: 20,
+            // fontFamily: "Times New Roman"
+          },
+          rowStyle: {
+            fontSize: 19
+          }
         }}
 
       />
