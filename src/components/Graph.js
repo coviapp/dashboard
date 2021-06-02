@@ -245,13 +245,26 @@ const Graph = (props) => {
 
         <div className={classes.sep}>
         </div>
-      
-      </div>
-      
+
+        <div className={classes.indivgraph}>
       <MaterialTable
         title="DateWise Data"
         columns={
           [
+            {
+              title: 'Entry Date',
+              field: 'entryTimeDateObject',
+              type: "date",
+              dateSetting: {
+                format: 'dd/MM/yyyy',
+                locale: "en-GB",
+              },
+            },
+            {
+              title: 'Entry Time',
+              field: 'entryTimeString',
+              filtering: false,
+            },
             {
               title: 'Temperature ' + degree + 'F',
               field: 'temperature',
@@ -268,20 +281,6 @@ const Graph = (props) => {
               }),
 
             },
-            {
-              title: 'Entry Date',
-              field: 'entryTimeDateObject',
-              type: "date",
-              dateSetting: {
-                format: 'dd/MM/yyyy',
-                locale: "en-GB",
-              },
-            },
-            {
-              title: 'Entry Time',
-              field: 'entryTimeString',
-              filtering: false,
-            },
           ]}
 
         data={state.rows}
@@ -294,6 +293,9 @@ const Graph = (props) => {
         }}
 
       />
+      </div>
+      
+      </div>
 
       <Footer></Footer>
     </Fragment>
