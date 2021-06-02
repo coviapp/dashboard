@@ -167,7 +167,7 @@ const Graph = (props) => {
                     y:{
                       ticks: {
                         callback: function(value) {
-                          return `value${degree} F`
+                          return `${value}${degree} F`
                         },
                       }  
                     }
