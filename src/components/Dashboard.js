@@ -16,6 +16,11 @@ const degree = '\xB0'
 const spo2UpperBound = 95
 const spo2LowerBound = 90
 
+const myCustomSortingAlgorithm = {
+  ascending: (a, b) => a.spo2 - b.spo2,
+  descending: (a, b) => b.spo2 - a.spo2
+}
+
 const useStyles = makeStyles({
   root: {
     backgroundColor: "#00C9BC",
@@ -57,76 +62,84 @@ const Dashboard = props => {
   }
 
   useEffect(() => {
-    const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-    axios.get(
-      url,
-      config
-    ).then(response => response.data)
-      .then((data) => {
-        const patientList = data.data;
-        // console.log(data.data)
-        /*
-        Response structure:
-          dateofbirth: "1990-06-15"
-          ec_rollno: "445566"
-          entrytime: "2021-06-02T11:26:20.000+00:00"
-          fever: 97
-          food_supply: "yes"
-          hall: "BRH"
-          have_covid: "yes"
-          isolation_address: "SAM"
-          isolation_date: "0006-12-11T18:30:00.000+00:00"
-          name: "coviapp demo2"
-          parent_mobileno: "1234567879"
-          pat_id: "BCRT0192805210001"
-          patient_condition: "ok"
-          phone: "2235488795"
-          selected_category: "PhD Student(Inst./Sponsored)"
-          spo2: 97
-          supervisor_mobileno: "123456789"
-          supervisor_name: "ABC"
-          symptoms: "feverish"
-         */
-        setState({ rows: patientList })
-      })
-      .catch((error) => {
-        console.log('token is expired logging in again for getting jwt');
-        axios.post("https://imedixbcr.iitkgp.ac.in/api/user/login", {
-          username: localStorage.getItem("username"),
-          password: localStorage.getItem("password")
-        }).then(res => {
-          const newJwtToken = res.data['jwtToken']
-          localStorage.setItem("token", newJwtToken)
 
-          const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
-          const token = localStorage.getItem("token");
-          const config = {
-            headers: { Authorization: `Bearer ${token}` }
-          };
-          axios.get(
-            url,
-            config
-          ).then(response => response.data)
-            .then((data) => {
-              const patientList = data.data;
-              console.log(data.data)
-              setState({ rows: patientList })
-            })
-            .catch((error) => {
-              console.log('error in fetching get-all-patients');
-              setState({ fetchError: true })
-              // console.log(error.message)
-            })
-          }).catch(error => {
-            console.log('error in logging in again from local-storage credentials');
-          setState({ fetchError: true })
-          // console.log(error.message)
+    const getData = async() => {
+      console.log("Making a request!")
+      const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+      axios.get(
+        url,
+        config
+      ).then(response => response.data)
+        .then((data) => {
+          const patientList = data.data;
+          // console.log(data.data)
+          /*
+          Response structure:
+            dateofbirth: "1990-06-15"
+            ec_rollno: "445566"
+            entrytime: "2021-06-02T11:26:20.000+00:00"
+            fever: 97
+            food_supply: "yes"
+            hall: "BRH"
+            have_covid: "yes"
+            isolation_address: "SAM"
+            isolation_date: "0006-12-11T18:30:00.000+00:00"
+            name: "coviapp demo2"
+            parent_mobileno: "1234567879"
+            pat_id: "BCRT0192805210001"
+            patient_condition: "ok"
+            phone: "2235488795"
+            selected_category: "PhD Student(Inst./Sponsored)"
+            spo2: 97
+            supervisor_mobileno: "123456789"
+            supervisor_name: "ABC"
+            symptoms: "feverish"
+          */
+          setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
         })
-      })
+        .catch((error) => {
+          console.log('token is expired logging in again for getting jwt');
+          axios.post("https://imedixbcr.iitkgp.ac.in/api/user/login", {
+            username: localStorage.getItem("username"),
+            password: localStorage.getItem("password")
+          }).then(res => {
+            const newJwtToken = res.data['jwtToken']
+            localStorage.setItem("token", newJwtToken)
+
+            const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
+            const token = localStorage.getItem("token");
+            const config = {
+              headers: { Authorization: `Bearer ${token}` }
+            };
+            axios.get(
+              url,
+              config
+            ).then(response => response.data)
+              .then((data) => {
+                const patientList = data.data;
+                console.log(data.data)
+                setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
+              })
+              .catch((error) => {
+                console.log('error in fetching get-all-patients');
+                setState({ fetchError: true })
+                // console.log(error.message)
+              })
+            }).catch(error => {
+              console.log('error in logging in again from local-storage credentials');
+            setState({ fetchError: true })
+            // console.log(error.message)
+          })
+        })
+      }
+      const interval = setInterval(() => {
+        getData()
+      }, 20000)
+      return () => clearInterval(interval)
   }, [])
 
   const _spo2Color = spo2Value => {
@@ -134,6 +147,7 @@ const Dashboard = props => {
     if (spo2Value >= spo2LowerBound) return 'orange';
     return 'red';
   }
+
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />
   }
@@ -195,13 +209,16 @@ const Dashboard = props => {
               title: 'Temperature ' + degree + 'F',
               field: 'fever',
               type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
+              filtering: false,
+              // customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
             },
             {
               title: 'SpO2 %',
               field: 'spo2',
               type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
+              customSort: (a, b) => a.spo2 - b.spo2,
+              filtering: false,
+              // customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
               cellStyle: columnData => ({
                 backgroundColor: _spo2Color(columnData),
               }),
@@ -211,13 +228,15 @@ const Dashboard = props => {
               title: 'Pulse Rate',
               field: 'pulse',
               type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
+              filtering: false,
+              // customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
             },
             {
               title: 'Respiratory Rate',
               field: 'resp',
               type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.resp,
+              filtering: false,
+              // customFilterAndSearch: (term, rowData) => term >= rowData.resp,
             },
             // {
             //   title: 'Discharged from Isolation',
@@ -246,6 +265,7 @@ const Dashboard = props => {
           exportAllData: true,
           pageSize: 10,
           search: true,
+          sorting: true,
           actionsColumnIndex: 1,
           headerStyle: {
             fontSize: 20,
@@ -254,6 +274,7 @@ const Dashboard = props => {
           rowStyle: {
             fontSize: 19
           }
+
         }}
 
         actions={[
