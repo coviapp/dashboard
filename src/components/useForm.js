@@ -22,14 +22,21 @@ const useForm = initialValues => {
                     password: values.password 
                 })
                 .then(res => {
-                    const jwtToken = res.data['jwtToken']
-                    localStorage.setItem("token", jwtToken)
-                    localStorage.setItem("username", values.username)
-                    localStorage.setItem("password", values.password)
-                    setValues({
-                        ...values,
-                        loggedIn: true
-                    })
+                    if(res.data['type'] === "doc" || res.data['type'] === "rOP" || res.data['type'] === "pOP") {
+                        const jwtToken = res.data['jwtToken']
+                        localStorage.setItem("token", jwtToken)
+                        localStorage.setItem("username", values.username)
+                        localStorage.setItem("password", values.password)
+                        setValues({
+                            ...values,
+                            loggedIn: true
+                        })
+                    } else {
+                        setValues({
+                            ...values,
+                            error: "Forbidden"
+                        })
+                    }
                 })
                 .catch(error => {
                     if (error.response) {

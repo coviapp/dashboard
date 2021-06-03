@@ -87,26 +87,25 @@ const Graph = (props) => {
       try {
         const res = await axios.post(url, bodyParams, config)
         const vals = res.data.data
-        console.log(vals)
-        var _entryTime = vals.map((entry) => {
+        const _entryTime = vals.map((entry) => {
           const entryDate = new Date(entry['entrytime'])
           return date.format(entryDate, 'HH:MM DD MMM')
         });
-        var _entryTimeDateObject = vals.map((entry) => {
+        const _entryTimeDateObject = vals.map((entry) => {
           return new Date(entry['entrytime'])
         });
-        var _spo2Data = vals.map((entry) => entry['spo2']);
-        var _tempData = vals.map((entry) => entry['fever']);
-        var _pulseRate = vals.map((entry) => entry['pulse_rate'])
+        const _spo2Data = vals.map((entry) => entry['spo2']);
+        const _tempData = vals.map((entry) => entry['fever']);
+        const _pulseRate = vals.map((entry) => entry['pulse_rate'])
 
-        var _rows=[]
+        const _rows=[]
         for (let i = 0; i < Math.min(_tempData.length, _spo2Data.length, _entryTimeDateObject.length); i++) {
           let dict = {};
-          dict['temperature'] = _tempData[i];
-          dict['spo2'] = _spo2Data[i];
-          dict['entryTimeDateObject'] = _entryTimeDateObject[i];
-          dict['entryTimeString'] = date.format(_entryTimeDateObject[i],'HH:MM:SS');
-          dict['pulse_rate'] = _pulseRate
+          dict['temperature'] = _tempData[i]
+          dict['spo2'] = _spo2Data[i]
+          dict['entryTimeDateObject'] = _entryTimeDateObject[i]
+          dict['entryTimeString'] = date.format(_entryTimeDateObject[i],'HH:MM:SS')
+          dict['pulse_rate'] = _pulseRate[i]
           _rows.push(dict);
         }
 
@@ -346,15 +345,14 @@ const Graph = (props) => {
               },
               rowStyle: {
                 fontSize: 19
-              }
+              },
+              sorting: true
             }}
 
           />
 
+          </div>
         <div className={classes.sep}></div>
-
-        </div>
-      
       </div>
 
       <Footer></Footer>
