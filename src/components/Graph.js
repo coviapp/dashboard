@@ -15,6 +15,11 @@ const degree = '\xB0'
 const spo2UpperBound = 95
 const spo2LowerBound = 90
 
+const myCustomSortingAlgorithm = {
+  ascending: (a, b) => (a.entryTimeDateObject > b.entryTimeDateObject) ? 1 : -1,
+  descending: (a, b) => (a.entryTimeDateObject < b.entryTimeDateObject) ? 1 : -1
+}
+
 const useStyles = makeStyles({
   appbar: {
     backgroundColor: "#00C9BC",
@@ -332,7 +337,7 @@ const Graph = (props) => {
                 },
               ]}
 
-            data={state.rows}
+            data={state.rows.sort(myCustomSortingAlgorithm.descending)}
 
             options={{ 
               search: false,
