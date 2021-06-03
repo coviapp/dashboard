@@ -75,7 +75,7 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          // console.log(data.data)
+          console.log(data.data)
           /*
           Response structure:
             dateofbirth: "1990-06-15"
@@ -120,7 +120,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                // console.log(data.data)
+                console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
@@ -227,18 +227,18 @@ const Dashboard = props => {
             },
             {
               title: 'Pulse Rate',
-              field: 'pulse',
+              field: 'pulse_rate',
               type: "numeric",
               filtering: false,
               // customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
             },
-            {
-              title: 'Respiratory Rate',
-              field: 'resp',
-              type: "numeric",
-              filtering: false,
-              // customFilterAndSearch: (term, rowData) => term >= rowData.resp,
-            },
+            // {
+            //   title: 'Respiratory Rate',
+            //   field: 'resp',
+            //   type: "numeric",
+            //   filtering: false,
+            //   // customFilterAndSearch: (term, rowData) => term >= rowData.resp,
+            // },
             // {
             //   title: 'Discharged from Isolation',
             //   field: 'status',
@@ -292,7 +292,7 @@ const Dashboard = props => {
         ]}
       />
       
-      <Footer></Footer>
+      <Footer/>
     </React.Fragment>
   )
   return content
