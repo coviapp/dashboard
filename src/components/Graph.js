@@ -63,6 +63,7 @@ const Graph = (props) => {
     entryTimeDateObject: [],
     spo2Data: [],
     tempData: [],
+    pulseData: [],
     rows: [],
   })
 
@@ -86,7 +87,7 @@ const Graph = (props) => {
       try {
         const res = await axios.post(url, bodyParams, config)
         const vals = res.data.data
-        // console.log(vals)
+        console.log(vals)
         var _entryTime = vals.map((entry) => {
           const entryDate = new Date(entry['entrytime'])
           return date.format(entryDate, 'HH:MM DD MMM')
@@ -96,6 +97,7 @@ const Graph = (props) => {
         });
         var _spo2Data = vals.map((entry) => entry['spo2']);
         var _tempData = vals.map((entry) => entry['fever']);
+        var _pulseRate = vals.map((entry) => entry['pulse_rate'])
 
         var _rows=[]
         for (let i = 0; i < Math.min(_tempData.length, _spo2Data.length, _entryTimeDateObject.length); i++) {
@@ -104,6 +106,7 @@ const Graph = (props) => {
           dict['spo2'] = _spo2Data[i];
           dict['entryTimeDateObject'] = _entryTimeDateObject[i];
           dict['entryTimeString'] = date.format(_entryTimeDateObject[i],'HH:MM:SS');
+          dict['pulse_rate'] = _pulseRate
           _rows.push(dict);
         }
 
@@ -113,6 +116,7 @@ const Graph = (props) => {
           spo2Data: _spo2Data,
           tempData: _tempData,
           rows: _rows,
+          pulseData: _pulseRate
         })
 
       } catch (error) {
@@ -247,60 +251,109 @@ const Graph = (props) => {
         </div>
 
         <div className={classes.indivgraph}>
-      <MaterialTable
-        title="DateWise Data"
-        columns={
-          [
-            {
-              title: 'Entry Date',
-              field: 'entryTimeDateObject',
-              type: "date",
-              dateSetting: {
-                format: 'dd/MM/yyyy',
-                locale: "en-GB",
+          <Line
+            data={{
+              labels: state.entryTime,
+              datasets: [
+                {
+                  label: 'Pulse',
+                  data: state.pulseData,
+                  backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                  borderColor: 'rgba(255, 0, 0, 1)',
+                  borderWidth: 1
+                }
+              ]
+            }}
+
+            options={{
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Pulse rate v/s time',
+                  font: {
+                    size: 20
+                  }
+                }
               },
-            },
-            {
-              title: 'Entry Time',
-              field: 'entryTimeString',
-              filtering: false,
-            },
-            {
-              title: 'Temperature ' + degree + 'F',
-              field: 'temperature',
-              type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
-            },
-            {
-              title: 'SpO2 %',
-              field: 'spo2',
-              type: "numeric",
-              customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
-              cellStyle: columnData => ({
-                backgroundColor: _spo2Color(columnData),
-              }),
+              scales: {
+                x: {
+                  beginAtZero: false
+                }
+              },
+            }}
+          />
+        </div>
 
-            },
-          ]}
+        <div className={classes.sep}>
+        </div>
 
-        data={state.rows}
+        <div className={classes.indivgraph}>
+          <MaterialTable
+            title="DateWise Data"
+            columns={
+              [
+                {
+                  title: 'Entry Date',
+                  field: 'entryTimeDateObject',
+                  type: "date",
+                  dateSetting: {
+                    format: 'dd/MM/yyyy',
+                    locale: "en-GB",
+                  },
+                },
+                {
+                  title: 'Entry Time',
+                  field: 'entryTimeString',
+                  filtering: false,
+                },
+                {
+                  title: 'Temperature ' + degree + 'F',
+                  field: 'temperature',
+                  type: "numeric",
+                  filtering: false,
+                  // customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
+                },
+                {
+                  title: 'SpO2 %',
+                  field: 'spo2',
+                  type: "numeric",
+                  filtering: false,
+                  // customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
+                  cellStyle: columnData => ({
+                    backgroundColor: _spo2Color(columnData),
+                  }),
 
-        options={{ 
-          search: false,
-          filtering: true,
-          exportButton: true,
-          exportAllData: true,
-          headerStyle: {
-            fontSize: 20,
-            // fontFamily: "Times New Roman"
-          },
-          rowStyle: {
-            fontSize: 19
-          }
-        }}
+                },
+                {
+                  title: 'Pulse Rate',
+                  field: 'pulse_rate',
+                  type: "numeric",
+                  filtering: false,
+                  // customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
+                },
+              ]}
 
-      />
-      </div>
+            data={state.rows}
+
+            options={{ 
+              search: false,
+              filtering: true,
+              exportButton: true,
+              exportAllData: true,
+              headerStyle: {
+                fontSize: 20,
+                // fontFamily: "Times New Roman"
+              },
+              rowStyle: {
+                fontSize: 19
+              }
+            }}
+
+          />
+
+        <div className={classes.sep}></div>
+
+        </div>
       
       </div>
 

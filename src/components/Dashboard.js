@@ -75,7 +75,7 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          console.log(data.data)
+          // console.log(data.data)
           /*
           Response structure:
             dateofbirth: "1990-06-15"
@@ -120,7 +120,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                console.log(data.data)
+                // console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
