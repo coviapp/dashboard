@@ -242,7 +242,7 @@ const Dashboard = props => {
             {
               title: 'Covid positive',
               field: 'have_covid',
-              filtering: false,
+              // filtering: false,
               // lookup: { 0: 'No', 1: 'Yes', },
             },
             {
