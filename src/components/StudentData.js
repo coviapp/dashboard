@@ -50,6 +50,7 @@ export default function StudentData(data) {
     createData('Phone Number', data['phone']),
     createData('Category', data['selected_category']),
     createData('Parent\'s mobile number', data['parent_mobileno']),
+    createData('Covid Positive', data['have_covid']),
   ];
 
   return (

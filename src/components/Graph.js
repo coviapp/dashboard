@@ -21,8 +21,13 @@ const myCustomSortingAlgorithm = {
 }
 
 const useStyles = makeStyles({
-  appbar: {
+  appbarNegative: {
     backgroundColor: "#00C9BC",
+    borderRadius: 6,
+    fontWeight: "bold",
+  },
+  appbarPositive: {
+    backgroundColor: "#ff0028",
     borderRadius: 6,
     fontWeight: "bold",
   },
@@ -156,7 +161,7 @@ const Graph = (props) => {
     <Fragment>
 
       <div className={classes.appbar}>
-        <AppBar position="static" className={classes.appbar}>
+        <AppBar position="static" className={props.location.state['have_covid'].toLowerCase().trim() === 'yes' ? classes.appbarPositive: classes.appbarNegative}>
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               Currently monitoring {props.location.state['name']}

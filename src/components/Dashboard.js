@@ -239,11 +239,12 @@ const Dashboard = props => {
             //   filtering: false,
             //   // customFilterAndSearch: (term, rowData) => term >= rowData.resp,
             // },
-            // {
-            //   title: 'Discharged from Isolation',
-            //   field: 'status',
-            //   lookup: { 0: 'No', 1: 'Yes', },
-            // },
+            {
+              title: 'Covid positive',
+              field: 'have_covid',
+              filtering: false,
+              // lookup: { 0: 'No', 1: 'Yes', },
+            },
             {
               title: 'Condition',
               field: 'patient_condition',
