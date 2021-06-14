@@ -75,28 +75,32 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          // console.log(data.data)
+          // console.log(patientList);
           /*
-          Response structure:
-            dateofbirth: "1990-06-15"
-            ec_rollno: "445566"
-            entrytime: "2021-06-02T11:26:20.000+00:00"
-            fever: 97
-            food_supply: "yes"
-            hall: "BRH"
+
+            Response structure:
+
+            dateofbirth: "05-06-1980"
+            ec_rollno: "112233"
+            entrytime: "2021-06-14T14:26:44.000+00:00"
+            fever: 102
+            food_supply: "no"
+            hall: "RK"
             have_covid: "yes"
-            isolation_address: "SAM"
-            isolation_date: "0006-12-11T18:30:00.000+00:00"
-            name: "coviapp demo2"
-            parent_mobileno: "1234567879"
-            pat_id: "BCRT0192805210001"
-            patient_condition: "ok"
-            phone: "2235488795"
-            selected_category: "PhD Student(Inst./Sponsored)"
-            spo2: 97
-            supervisor_mobileno: "123456789"
-            supervisor_name: "ABC"
-            symptoms: "feverish"
+            isolation_address: "nehru"
+            isolation_date: "2021-06-08T18:30:00.000+00:00"
+            name: "coviapp demo1"
+            parent_mobileno: "1234567890"
+            pat_id: "BCRT0192805210000"
+            patient_condition: "body-ache, headache, yes"
+            phone: "1123455678"
+            pulse_rate: 102
+            selected_category: "B.Tech (regular/DD)"
+            spo2: 90
+            supervisor_mobileno: "1234567890"
+            supervisor_name: "abcd"
+            symptoms: "cough"
+
           */
           setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
         })
