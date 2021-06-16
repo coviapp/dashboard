@@ -10,7 +10,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Footer from './Footer'
-import date from 'date-and-time'
 
 const degree = '\xB0'
 const spo2UpperBound = 95
@@ -311,7 +310,7 @@ const Dashboard = props => {
 
         components={{
           Toolbar: props => (
-            <div style={{backgroundColor: "rgb(14, 20, 120)", color: "white"}}>
+            <div style={{backgroundColor: "rgb(14, 20, 120)", color: "white", borderColor: "white"}}>
               <MTableToolbar{...props} />
             </div>
           )
