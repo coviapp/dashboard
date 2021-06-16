@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import MaterialTable from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 import axios from 'axios'
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
@@ -15,6 +15,8 @@ import date from 'date-and-time'
 const degree = '\xB0'
 const spo2UpperBound = 95
 const spo2LowerBound = 90
+const firstDoseDone = "#469740"
+const secondDoseDone = "rgb(14, 152, 4, 0.5)"
 
 const myCustomSortingAlgorithm = {
   ascending: (a, b) => a.spo2 - b.spo2,
@@ -39,7 +41,11 @@ const useStyles = makeStyles({
   title: {
     flexGrow: 1,
     fontSize: 25,
-    fontWeight: "bold"
+    fontWeight: "bold",
+  },
+  sep: {
+    marginTop: 20,
+    marginBottom: 20
   },
 })
 
@@ -75,20 +81,20 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          // console.log(patientList);
+          console.log(data.data)
           /*
-
-            Response structure:
-
+          Response structure:
+            date_of_first_dose: "14-06-2021"
+            date_of_second_dose: "24-06-2021"
             dateofbirth: "05-06-1980"
             ec_rollno: "112233"
-            entrytime: "2021-06-14T14:26:44.000+00:00"
+            entrydate: "14-06-2021 19:56:44"
             fever: 102
             food_supply: "no"
             hall: "RK"
             have_covid: "yes"
             isolation_address: "nehru"
-            isolation_date: "2021-06-08T18:30:00.000+00:00"
+            isolation_date: "09-06-2021"
             name: "coviapp demo1"
             parent_mobileno: "1234567890"
             pat_id: "BCRT0192805210000"
@@ -100,7 +106,9 @@ const Dashboard = props => {
             supervisor_mobileno: "1234567890"
             supervisor_name: "abcd"
             symptoms: "cough"
-
+            tableData: {id: 0}
+            vaccinated: "yes"
+            vaccine_type: "Covishield"
           */
           setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
         })
@@ -124,7 +132,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                // console.log(data.data)
+                console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
@@ -189,6 +197,10 @@ const Dashboard = props => {
         </AppBar>
       </div>
 
+      <div className={classes.sep}>
+
+      </div>
+
       <MaterialTable
         title="CoviApp Dashboard"
         columns={
@@ -236,17 +248,16 @@ const Dashboard = props => {
               filtering: false,
               // customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
             },
-            // {
-            //   title: 'Respiratory Rate',
-            //   field: 'resp',
-            //   type: "numeric",
-            //   filtering: false,
-            //   // customFilterAndSearch: (term, rowData) => term >= rowData.resp,
-            // },
             {
               title: 'Covid positive',
               field: 'have_covid',
-              // filtering: false,
+              filtering: false,
+              // lookup: { 0: 'No', 1: 'Yes', },
+            },
+            {
+              title: 'Isolated for',
+              field: 'have_covid',
+              filtering: false,
               // lookup: { 0: 'No', 1: 'Yes', },
             },
             {
@@ -256,11 +267,11 @@ const Dashboard = props => {
             },
             {
               title: 'Last Updated',
-              field: 'entrytime',
-              render: columnData => {
-                const chkDate = new Date(columnData['entrytime'])
-                return date.format(chkDate, 'HH:MM DD/MM/YY')
-              }
+              field: 'entrydate',
+              // render: columnData => {
+              //   const chkDate = new Date(columnData['entrytime'])
+              //   return date.format(chkDate, 'HH:MM DD/MM/YY')
+              // }
             },
           ]}
 
@@ -273,14 +284,16 @@ const Dashboard = props => {
           search: true,
           sorting: true,
           actionsColumnIndex: 1,
+          rowStyle: rowData => ({
+            fontSize: 19,
+            backgroundColor: rowData["date_of_second_dose"] ? secondDoseDone : (rowData["date_of_first_dose"] ? firstDoseDone : "white"),
+          }),
           headerStyle: {
+            backgroundColor : "rgb(14, 20, 120)",
             fontSize: 20,
-            // fontFamily: "Times New Roman"
+            margin: 0,
+            color: "white",
           },
-          rowStyle: {
-            fontSize: 19
-          }
-
         }}
 
         actions={[
@@ -295,6 +308,14 @@ const Dashboard = props => {
             }
           })
         ]}
+
+        components={{
+          Toolbar: props => (
+            <div style={{backgroundColor: "rgb(14, 20, 120)", color: "white"}}>
+              <MTableToolbar{...props} />
+            </div>
+          )
+        }}
       />
       
       <Footer/>
