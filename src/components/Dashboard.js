@@ -10,12 +10,15 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Footer from './Footer'
+import date from "date-and-time"
 
 const degree = '\xB0'
 const spo2UpperBound = 95
 const spo2LowerBound = 90
-const firstDoseDone = "#469740"
-const secondDoseDone = "rgb(14, 152, 4, 0.5)"
+const myHeaderColor = "linear-gradient(0deg, #FFFEFF 0%, #D7FFFE 100%)"
+const secondDoseImg = "linear-gradient(-30deg, #FFFEFF 0%, #3FFF00 100%)"
+const firstDoseImg = "linear-gradient(-30deg, #FFFEFF 0%, #98FB98 100%)"
+
 
 const myCustomSortingAlgorithm = {
   ascending: (a, b) => a.spo2 - b.spo2,
@@ -24,17 +27,17 @@ const myCustomSortingAlgorithm = {
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: "#00C9BC",
     flexGrow: 1,
-    borderRadius: 6
+    borderRadius: 6,
+    background: "linear-gradient(45deg, #667eea 0%, #764ba2 100%)",
   },
   menuButton: {
     marginRight: 2,
     fontSize: 18,
     fontFamily: "Comic sans ms",
-    backgroundColor: "#E0FFFF",
+    background: "linear-gradient(45deg, #a8edea 0%, #fed6e3 100%)",
     '&:hover': {
-      backgroundColor: "#FFFDD0",
+      background: "linear-gradient(45deg, #96fbc4 50%, #f9f586 100%)"
     }
   },
   title: {
@@ -80,7 +83,7 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          console.log(data.data)
+          // console.log(data.data)
           /*
           Response structure:
             date_of_first_dose: "14-06-2021"
@@ -131,7 +134,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                console.log(data.data)
+                // console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
@@ -266,11 +269,11 @@ const Dashboard = props => {
             },
             {
               title: 'Last Updated',
-              field: 'entrydate',
-              // render: columnData => {
-              //   const chkDate = new Date(columnData['entrytime'])
-              //   return date.format(chkDate, 'HH:MM DD/MM/YY')
-              // }
+              field: 'entrytime',
+              render: columnData => {
+                const chkDate = new Date(columnData['entrytime'])
+                return date.format(chkDate, 'HH:MM DD/MM/YY')
+              }
             },
           ]}
 
@@ -285,13 +288,11 @@ const Dashboard = props => {
           actionsColumnIndex: 1,
           rowStyle: rowData => ({
             fontSize: 19,
-            backgroundColor: rowData["date_of_second_dose"] ? secondDoseDone : (rowData["date_of_first_dose"] ? firstDoseDone : "white"),
+            background: rowData["date_of_second_dose"] ? secondDoseImg : (rowData["date_of_first_dose"] ? firstDoseImg : "white"),
           }),
           headerStyle: {
-            backgroundColor : "rgb(14, 20, 120)",
             fontSize: 20,
-            margin: 0,
-            color: "white",
+            background: myHeaderColor,
           },
         }}
 
@@ -309,9 +310,9 @@ const Dashboard = props => {
         ]}
 
         components={{
-          Toolbar: props => (
-            <div style={{backgroundColor: "rgb(14, 20, 120)", color: "white", borderColor: "white"}}>
-              <MTableToolbar{...props} />
+          Toolbar: (props) =>(
+            <div style ={{background: myHeaderColor,}}>
+              <MTableToolbar {...props} />
             </div>
           )
         }}

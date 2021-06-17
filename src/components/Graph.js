@@ -20,6 +20,15 @@ const myCustomSortingAlgorithm = {
   descending: (a, b) => (a.entryTimeDateObject < b.entryTimeDateObject) ? 1 : -1
 }
 
+/*
+{
+  Header: (props) => (
+    <div style={{backgroundColor: "rgb(14, 20, 120)", color: "white", borderColor: "white"}}>
+      <MTableHeader{...props} />
+    </div>
+  ),
+},      
+*/
 const useStyles = makeStyles({
   appbarNegative: {
     backgroundColor: "#00C9BC",
