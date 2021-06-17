@@ -83,20 +83,20 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
-          // console.log(data.data)
+          console.log(data.data)
           /*
           Response structure:
-            date_of_first_dose: "14-06-2021"
-            date_of_second_dose: "24-06-2021"
-            dateofbirth: "05-06-1980"
+            date_of_first_dose: "2021-06-13T18:30:00.000+00:00"
+            date_of_second_dose: "2021-06-23T18:30:00.000+00:00"
+            dateofbirth: "1980-06-04T18:30:00.000+00:00"
             ec_rollno: "112233"
-            entrydate: "14-06-2021 19:56:44"
+            entrytime: "2021-06-14T14:26:44.000+00:00"
             fever: 102
             food_supply: "no"
             hall: "RK"
             have_covid: "yes"
             isolation_address: "nehru"
-            isolation_date: "09-06-2021"
+            isolation_date: "2021-06-08T18:30:00.000+00:00"
             name: "coviapp demo1"
             parent_mobileno: "1234567890"
             pat_id: "BCRT0192805210000"
@@ -111,6 +111,7 @@ const Dashboard = props => {
             tableData: {id: 0}
             vaccinated: "yes"
             vaccine_type: "Covishield"
+            __proto__: Object
           */
           setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
         })
@@ -134,7 +135,7 @@ const Dashboard = props => {
             ).then(response => response.data)
               .then((data) => {
                 const patientList = data.data;
-                // console.log(data.data)
+                console.log(data.data)
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
@@ -257,10 +258,14 @@ const Dashboard = props => {
               // lookup: { 0: 'No', 1: 'Yes', },
             },
             {
-              title: 'Isolated for',
-              field: 'have_covid',
+              title: 'Days in isolation',
+              field: 'isolation_date',
               filtering: false,
-              // lookup: { 0: 'No', 1: 'Yes', },
+              render: columnData => {
+                const chkDate = new Date(columnData['isolation_date'])
+                const today = new Date()
+                return Math.round(date.subtract(today, chkDate).toDays())
+              }
             },
             {
               title: 'Condition',
