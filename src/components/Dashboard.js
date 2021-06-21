@@ -217,10 +217,10 @@ const Dashboard = props => {
               field: 'selected_category',
               // lookup: { 1: 'Student', 2: 'Faculty', 3: 'Staff' },
             },
-            {
-              title: 'Roll No/EC ',
-              field: 'ec_rollno'
-            },
+            // {
+            //   title: 'Roll No/EC ',
+            //   field: 'ec_rollno'
+            // },
             {
               title: 'Location',
               field: 'isolation_address'
