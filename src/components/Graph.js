@@ -3,15 +3,13 @@ import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import StudentData from './StudentData'
 import LineGraph from './LineGraph'
+import DaywiseData from './DaywiseData'
 import Appbar from './Appbar'
 import axios from 'axios'
 import date from 'date-and-time'
-import MaterialTable from 'material-table'
 import Footer from './Footer'
 
-const degree = '\xB0' + " F"
-const spo2UpperBound = 95
-const spo2LowerBound = 90
+const degree = '\xB0 F'
 const temperatureGraph = {
   unit: degree,
   title: "Temperature"
@@ -24,19 +22,6 @@ const PulseRateGraph = {
   unit: ' ',
   title: "Pulse Rate"
 }
-
-const myCustomSortingAlgorithm = {
-  ascending: (a, b) => (a.entryTimeDateObject > b.entryTimeDateObject) ? 1 : -1,
-  descending: (a, b) => (a.entryTimeDateObject < b.entryTimeDateObject) ? 1 : -1
-}
-
-/*
-  Basically 5 components
-  1. Table for individual data (basic). {done}
-  2. Graph(s) {Make one component only ?}
-  3. Last table consisting of all data
-*/
-
 const useStyles = makeStyles({
   root: {
     backgroundColor: "#00C9BC",
@@ -64,8 +49,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Graph = (props) => {
-  console.log(temperatureGraph["title"])
+export default function Graph(props) {
 
   let loggedIn = false
   const classes = useStyles()
@@ -83,6 +67,10 @@ const Graph = (props) => {
     pulseData: [],
     rows: [],
   })
+
+  const formatTime = (entryTime) => {
+    return date.format(new Date(entryTime), 'HH:MM:SS')
+  }
 
   useEffect(() => {
 
@@ -104,28 +92,29 @@ const Graph = (props) => {
       try {
         const res = await axios.post(url, bodyParams, config)
         const vals = res.data.data
+
         const _entryTime = vals.map((entry) => {
           const entryDate = new Date(entry['entrytime'])
           return date.format(entryDate, 'HH:MM DD MMM')
-        });
+        })
+
         const _entryTimeDateObject = vals.map((entry) => {
           return new Date(entry['entrytime'])
-        });
+        })
 
-        const _spo2Data = vals.map((entry) => entry['spo2']);
-        const _tempData = vals.map((entry) => entry['fever']);
+        const _spo2Data = vals.map((entry) => entry['spo2'])
+        const _tempData = vals.map((entry) => entry['fever'])
         const _pulseRate = vals.map((entry) => entry['pulse_rate'])
 
-        const _rows=[]
-        for (let i = 0; i < Math.min(_tempData.length, _spo2Data.length, _entryTimeDateObject.length); i++) {
-          let dict = {};
-          dict['temperature'] = _tempData[i]
-          dict['spo2'] = _spo2Data[i]
-          dict['entryTimeDateObject'] = _entryTimeDateObject[i]
-          dict['entryTimeString'] = date.format(_entryTimeDateObject[i],'HH:MM:SS')
-          dict['pulse_rate'] = _pulseRate[i]
-          _rows.push(dict);
-        }
+        const _rows = vals.map(entry => (
+          {
+            temperature: entry['fever'],
+            spo2: entry['spo2'],
+            entryTimeDateObject: entry['entrytime'],
+            entryTimeString: formatTime(entry['entrytime']),
+            pulse_rate: entry['pulse_rate']
+          }
+        ))
 
         setState({
           entryTime: _entryTime,
@@ -137,7 +126,7 @@ const Graph = (props) => {
         })
 
       } catch (error) {
-        console.log("Logging in again!")
+        // console.log("Logging in again!")
         try {
           const retry = await axios.post("https://imedixbcr.iitkgp.ac.in/api/user/login", {
             username: localStorage.getItem("username"),
@@ -157,12 +146,6 @@ const Graph = (props) => {
 
   if (state.loggedIn === false) {
     return <Redirect to="/logout" />
-  }
-
-  const _spo2Color = spo2Value => {
-    if (spo2Value >= spo2UpperBound) return 'white';
-    if (spo2Value >= spo2LowerBound) return 'orange';
-    return 'red';
   }
 
   let content = (
@@ -190,77 +173,14 @@ const Graph = (props) => {
           </div>
 
           <div className={classes.indivgraph}>
-            <MaterialTable
-              title="DateWise Data"
-              columns={
-                [
-                  {
-                    title: 'Entry Date',
-                    field: 'entryTimeDateObject',
-                    type: "date",
-                    dateSetting: {
-                      format: 'dd/MM/yyyy',
-                      locale: "en-GB",
-                    },
-                  },
-                  {
-                    title: 'Entry Time',
-                    field: 'entryTimeString',
-                    filtering: false,
-                  },
-                  {
-                    title: 'Temperature ' + degree + 'F',
-                    field: 'temperature',
-                    type: "numeric",
-                    filtering: false,
-                    // customFilterAndSearch: (term, rowData) => term >= rowData.temperature,
-                  },
-                  {
-                    title: 'SpO2 %',
-                    field: 'spo2',
-                    type: "numeric",
-                    filtering: false,
-                    // customFilterAndSearch: (term, rowData) => term >= rowData.spo2,
-                    cellStyle: columnData => ({
-                      backgroundColor: _spo2Color(columnData),
-                    }),
-
-                  },
-                  {
-                    title: 'Pulse Rate',
-                    field: 'pulse_rate',
-                    type: "numeric",
-                    filtering: false,
-                    // customFilterAndSearch: (term, rowData) => term >= rowData.pulse,
-                  },
-                ]}
-
-              data={state.rows.sort(myCustomSortingAlgorithm.descending)}
-
-              options={{ 
-                search: false,
-                filtering: true,
-                exportButton: true,
-                exportAllData: true,
-                headerStyle: {
-                  fontSize: 20,
-                  // fontFamily: "Times New Roman"
-                },
-                rowStyle: {
-                  fontSize: 19
-                },
-                sorting: true
-              }}
-
-            />
+            <DaywiseData rows={state.rows}/>
           </div>
       </div>
 
       <Footer/>
+
     </Fragment>
-  );
+  )
 
   return content
 }
-
-export default Graph

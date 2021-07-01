@@ -71,7 +71,6 @@ const Dashboard = props => {
 
   useEffect(() => {
     const getData = async() => {
-      // console.log("Making a request!")
       const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
       const token = localStorage.getItem("token");
       const config = {
@@ -137,12 +136,12 @@ const Dashboard = props => {
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {
-                console.log('error in fetching get-all-patients');
+                console.error('error in fetching get-all-patients');
                 setState({ fetchError: true })
                 // console.log(error.message)
               })
             }).catch(error => {
-              console.log('error in logging in again from local-storage credentials');
+              console.error('error in logging in again from local-storage credentials');
             setState({ fetchError: true })
             // console.log(error.message)
           })
