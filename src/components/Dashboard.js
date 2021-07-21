@@ -82,6 +82,17 @@ const Dashboard = props => {
       ).then(response => response.data)
         .then((data) => {
           const patientList = data.data;
+
+          // remove data which are less than 21 days old from list
+          let timeStamp = new Date().getTime() - (21 * 24 * 60 * 60 * 1000); // day hour  min  sec  msec
+          for(let i=0;i<patientList.length && i>=0;i++) {
+            let patientEntryTime = new Date(patientList[i]['entrytime']);
+            if(patientEntryTime < timeStamp) {
+              patientList.splice(i,1);
+              i--;
+            }
+          }
+
           /*
           Response structure:
             date_of_first_dose: "2021-06-13T18:30:00.000+00:00"
