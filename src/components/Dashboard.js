@@ -18,6 +18,7 @@ const spo2LowerBound = 90
 const myHeaderColor = "linear-gradient(0deg, #FFFEFF 0%, #D7FFFE 100%)"
 const secondDoseImg = "linear-gradient(-30deg, #FFFEFF 0%, #3FFF00 100%)"
 const firstDoseImg = "linear-gradient(-30deg, #FFFEFF 0%, #98FB98 100%)"
+const limitForLastUpdated = 21
 
 
 const myCustomSortingAlgorithm = {
@@ -72,7 +73,8 @@ const Dashboard = props => {
   useEffect(() => {
     const getData = async() => {
       const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token")
+      const dateToday = new Date()
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -81,18 +83,13 @@ const Dashboard = props => {
         config
       ).then(response => response.data)
         .then((data) => {
-          const patientList = data.data;
-
-          // remove data which are less than 21 days old from list
-          let timeStamp = new Date().getTime() - (21 * 24 * 60 * 60 * 1000); // day hour  min  sec  msec
-          for(let i=0;i<patientList.length && i>=0;i++) {
-            let patientEntryTime = new Date(patientList[i]['entrytime']);
-            if(patientEntryTime < timeStamp) {
-              patientList.splice(i,1);
-              i--;
-            }
-          }
-
+          let patientList = data.data;
+          patientList = patientList.filter((patientData) => {
+            const lastUpdated = new Date(patientData['entrytime'])
+            const days = date.subtract(dateToday, lastUpdated).toDays()
+            return days <= limitForLastUpdated 
+          });
+          setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
           /*
           Response structure:
             date_of_first_dose: "2021-06-13T18:30:00.000+00:00"
@@ -122,7 +119,6 @@ const Dashboard = props => {
             vaccine_type: "Covishield"
             __proto__: Object
           */
-          setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
         })
         .catch((error) => {
           console.log('token is expired logging in again for getting jwt');
@@ -133,8 +129,8 @@ const Dashboard = props => {
             const newJwtToken = res.data['jwtToken']
             localStorage.setItem("token", newJwtToken)
 
-            const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients";
-            const token = localStorage.getItem("token");
+            const url = "https://imedixbcr.iitkgp.ac.in/api/coviapp/get-all-patients"
+            const token = localStorage.getItem("token")
             const config = {
               headers: { Authorization: `Bearer ${token}` }
             };
@@ -143,7 +139,12 @@ const Dashboard = props => {
               config
             ).then(response => response.data)
               .then((data) => {
-                const patientList = data.data;
+                let patientList = data.data;
+                patientList = patientList.filter((patientData) => {
+                  const lastUpdated = new Date(patientData['entrytime'])
+                  const days = date.subtract(dateToday, lastUpdated).toDays()
+                  return days <= limitForLastUpdated 
+                });
                 setState({ rows: patientList.sort(myCustomSortingAlgorithm.ascending) })
               })
               .catch((error) => {

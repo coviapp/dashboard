@@ -15,7 +15,7 @@ const useStyles = makeStyles({
         borderRadius: 6,
         fontWeight: "bold",
     },
-        appbarPositive: {
+    appbarPositive: {
         backgroundColor: "#ff0028",
         borderRadius: 6,
         fontWeight: "bold",
