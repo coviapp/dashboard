@@ -1,19 +1,21 @@
 import { useState } from "react"
 import Axios from "axios"
 
+// This is my own custom hook!
 const useForm = initialValues => {
     const [values, setValues] = useState(initialValues);
 
     return [
         values,
         e => {
-            // console.log(e)
+            // handle change function
             setValues({
                 ...values,
                 [e.target.name]: e.target.value
             })
         },
         e => {
+            // handle submit function
             e.preventDefault()
 
             Axios

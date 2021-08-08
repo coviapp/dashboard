@@ -11,8 +11,8 @@ const styles = theme => ({
   },
   footer: {
     backgroundColor: 'black',
-    marginTop: theme.spacing.unit ,
-    padding: `${theme.spacing.unit * 4}px 0`,
+    marginTop: theme.spacing(1) ,
+    padding: `${theme.spacing(4)}px 0`,
     borderRadius: 6
   },
   textProps: {

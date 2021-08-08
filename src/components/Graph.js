@@ -10,6 +10,7 @@ import date from 'date-and-time'
 import Footer from './Footer'
 
 const degree = '\xB0 F'
+// Graph props
 const temperatureGraph = {
   unit: degree,
   title: "Temperature"
